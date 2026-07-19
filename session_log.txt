@@ -1,0 +1,4 @@
+[SYSTEM INITIALIZED]
+Application: Extinct Ai
+Developer: M.Huraira
+Status: Core Ready.
