@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Extinct Ai - Core Console</title>
+    <style>
+        :root {
+            --bg-deep: #06070a;
+            --bg-panel: #0c0f16;
+            --bg-card: #131924;
+            --bg-user: #1a2336;
+            --neon-cyan: #00f0ff;
+            --neon-gold: #ffaa00;
+            --neon-glow: rgba(0, 240, 255, 0.25);
+            --text-main: #94a3b8;
+            --text-bright: #ffffff;
+            --status-green: #00ff66;
+            --status-red: #ff4a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: -webkit-fill-available;
+            width: 100vw;
+            position: relative;
+        }
+
+        /* --- Header UI --- */
+        .sys-header {
+            background-color: var(--bg-panel);
+            padding: 10px 14px;
+            border-bottom: 2px solid var(--neon-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1);
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-logo {
+            width: 32px;
+            height: 32px;
+            border: 2px dashed var(--neon-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--neon-cyan);
+            font-size: 0.8rem;
+            animation: spin 12s linear infinite;
+            box-shadow: 0 0 8px var(--neon-glow);
+        }
+
+        .brand-zone h1 {
+            color: var(--text-bright);
+            font-size: 1.15rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .token-badge {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--neon-gold);
+            color: var(--neon-gold);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .token-icon { color: var(--neon-gold); font-size: 0.9rem; }
+
+        .pro-btn {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pro-btn.active {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* --- Meta Strip Info --- */
+        .meta-strip {
+            background: #080a0f;
+            padding: 6px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+        }
+
+        .meta-left span { color: #50617a; }
+        .meta-left strong { color: var(--neon-cyan); }
+
+        .clear-btn {
+            background: transparent;
+            border: 1px solid #ff4a4a;
+            color: #ff4a4a;
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- Chat Core Area --- */
+        .terminal-feed {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background-color: var(--bg-deep);
+            background-image: linear-gradient(rgba(255,255,255,0.005) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.005) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- Message Bubbles --- */
+        .msg-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+            gap: 5px;
+        }
+
+        .msg-container.ai { align-self: flex-start; }
+        .msg-container.user { align-self: flex-end; }
+
+        .msg-bubble {
+            padding: 12px 14px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            border-radius: 8px;
+        }
+
+        .ai .msg-bubble {
+            background-color: var(--bg-panel);
+            color: #e2e8f0;
+            border-left: 3px solid var(--neon-cyan);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .user .msg-bubble {
+            background-color: var(--bg-user);
+            color: var(--text-bright);
+            border-right: 3px solid var(--neon-cyan);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        /* Photo Grid Layout Framework */
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 6px;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+
+        .attached-photo {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+        }
+
+        /* Sandbox AI Image Canvas Block */
+        .pic-render-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+            max-width: 280px;
+            width: 100%;
+        }
+
+        .generated-pic {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-glow);
+            display: block;
+        }
+
+        .pic-download-btn {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .pic-download-btn:active {
+            background: var(--neon-cyan);
+            color: #000;
+        }
+
+        /* --- Cyber Toast System Window --- */
+        .cyber-toast {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #11070a;
+            border: 1px solid var(--status-red);
+            box-shadow: 0 0 15px rgba(255, 74, 74, 0.2);
+            color: #ffb3b3;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 99;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .cyber-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- Utility Action Buttons --- */
+        .bubble-actions {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+            padding: 2px 4px;
+            user-select: none;
+        }
+
+        .ai .bubble-actions { justify-content: flex-start; }
+        .user .bubble-actions { justify-content: flex-end; }
+
+        .action-link { color: #50617a; cursor: pointer; transition: color 0.1s ease; }
+        .action-link:active { color: var(--neon-cyan); }
+        .action-link.active-like { color: var(--status-green) !important; font-weight: bold; }
+        .action-link.active-dislike { color: var(--status-red) !important; font-weight: bold; }
+
+        /* --- Input Control Deck Footer --- */
+        .control-deck {
+            padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+            background-color: var(--bg-panel);
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .add-file-label {
+            width: 42px;
+            height: 42px;
+            background: #131924;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-cyan);
+            font-size: 1.4rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .add-file-label:active { background: var(--bg-user); }
+
+        .terminal-input {
+            flex: 1;
+            background-color: #040508;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-bright);
+            font-size: 0.95rem;
+            outline: none;
+            height: 42px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #00f0ff 0%, #00b8d4 100%);
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            padding: 0 16px;
+            height: 42px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* --- API Fallback Modal Window --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal-card { background: var(--bg-panel); border: 2px solid var(--neon-cyan); border-radius: 8px; width: 90%; max-width: 340px; padding: 20px; text-align: center; }
+        .modal-card h3 { color: var(--text-bright); margin-bottom: 10px; font-size: 1.1rem; }
+        .modal-card p { font-size: 0.8rem; margin-bottom: 15px; }
+        .api-link { color: var(--neon-cyan); font-size: 0.8rem; display: inline-block; margin-bottom: 15px; text-decoration: underline; }
+        .modal-input { width: 100%; background: #000; border: 1px solid #1e293b; color: #fff; padding: 10px; font-size: 0.85rem; border-radius: 4px; margin-bottom: 15px; outline: none; }
+        .modal-btn { background: var(--neon-cyan); color: #000; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="sys-header">
+            <div class="logo-area">
+                <div class="ai-logo">EX</div>
+                <div class="brand-zone">
+                    <h1>Extinct Ai</h1>
+                </div>
+            </div>
+            <div class="header-controls">
+                <div class="token-badge">
+                    <span class="token-icon">⧫</span><span id="tokenCount">0</span>
+                </div>
+                <button class="pro-btn" id="proToggleBtn">PRO: OFF</button>
+            </div>
+        </header>
+
+        <section class="meta-strip">
+            <div class="meta-left">
+                <span>Core: <strong>M.Huraira Engine</strong></span>
+            </div>
+            <div>
+                <button class="clear-btn" id="wipeConsoleBtn" style="margin-right: 10px;">CLEAR</button>
+                <span style="color: #50617a;">Mode: <span id="currentModeLabel" style="color:var(--text-bright)">Standard</span></span>
+            </div>
+        </section>
+
+        <main class="terminal-feed" id="chatBox"></main>
+
+        <!-- Dynamic Custom Notification Element -->
+        <div class="cyber-toast" id="systemToast">
+            <span style="color: var(--status-red);">⚠️</span> <span id="toastMsg">ACCESS DENIED</span>
+        </div>
+
+        <footer class="control-deck">
+            <label for="fileUploader" class="add-file-label">+</label>
+            <input type="file" id="fileUploader" accept="image/*" multiple style="display: none;">
+            <input type="text" id="userInput" class="terminal-input" placeholder="Execute terminal sequence..." autocomplete="off">
+            <button id="sendBtn" class="action-btn">EXECUTE</button>
+        </footer>
+    </div>
+
+    <div class="modal-overlay" id="keyModal">
+        <div class="modal-card">
+            <h3>⚠️ RATE LIMIT REACHED</h3>
+            <p>Your access token has expired. Acquire a secondary string key code to maintain access flow:</p>
+            <a href="https://aistudio.google.com/" target="_blank" class="api-link">Get Google Gemini API Key ↗</a>
+            <input type="text" id="altKeyInput" class="modal-input" placeholder="Paste alternate key registry...">
+            <button id="saveKeyBtn" class="modal-btn">MOUNT NEW KEY</button>
+        </div>
+    </div>
+
+    <script>
+        let GEMINI_API_KEY = "AQ.Ab8RN6LAeMjT7vzgG6hFeRLXjFg6PbFP7UB7wYy-WYzJUK2-Xw";
+        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
+        
+        let tokenBalance = parseInt(localStorage.getItem('ex_tokens')) || 0;
+        let isProMode = localStorage.getItem('ex_pro') === 'true';
+        let memoryMatrix = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatBox = document.getElementById('chatBox');
+            const userInput = document.getElementById('userInput');
+            const sendBtn = document.getElementById('sendBtn');
+            const tokenCountDisplay = document.getElementById('tokenCount');
+            const proToggleBtn = document.getElementById('proToggleBtn');
+            const currentModeLabel = document.getElementById('currentModeLabel');
+            const keyModal = document.getElementById('keyModal');
+            const altKeyInput = document.getElementById('altKeyInput');
+            const saveKeyBtn = document.getElementById('saveKeyBtn');
+            const wipeConsoleBtn = document.getElementById('wipeConsoleBtn');
+            const fileUploader = document.getElementById('fileUploader');
+            const systemToast = document.getElementById('systemToast');
+            const toastMsg = document.getElementById('toastMsg');
+
+            tokenCountDisplay.textContent = tokenBalance;
+            updateProModeUI();
+
+            function showCyberToast(message) {
+                toastMsg.textContent = message;
+                systemToast.classList.add('show');
+                setTimeout(() => {
+                    systemToast.classList.remove('show');
+                }, 3000);
+            }
+
+            function updateProModeUI() {
+                if (isProMode) {
+                    proToggleBtn.textContent = "PRO: ACTIVE";
+                    proToggleBtn.classList.add('active');
+                    currentModeLabel.textContent = "Pro Suite";
+                    currentModeLabel.style.color = "var(--neon-cyan)";
+                } else {
+                    proToggleBtn.textContent = "BUY PRO (200)";
+                    proToggleBtn.classList.remove('active');
+                    currentModeLabel.textContent = "Standard";
+                    currentModeLabel.style.color = "var(--text-bright)";
+                }
+            }
+
+            function initNewChatSession() {
+                chatBox.innerHTML = ''; 
+                memoryMatrix = []; 
+                appendInteractiveMessage("System initialized. Extinct Ai console live. Built, customized, and designed exclusively by M.Huraira.", "ai", false);
+            }
+
+            function appendInteractiveMessage(text, identity, animate = true, isImageRequest = false, imagePrompt = "", imgSources = []) {
+                const container = document.createElement('div');
+                container.classList.add('msg-container', identity);
+
+                const bubble = document.createElement('div');
+                bubble.classList.add('msg-bubble');
+
+                if (imgSources && imgSources.length > 0) {
+                    const grid = document.createElement('div');
+                    grid.classList.add('image-preview-grid');
+                    imgSources.forEach(src => {
+                        const img = document.createElement('img');
+                        img.classList.add('attached-photo');
+                        img.src = src;
+                        grid.appendChild(img);
+                    });
+                    bubble.appendChild(grid);
+                }
+
+                container.appendChild(bubble);
+
+                // Setup Upgraded High-Definition Image Block with Local Storage Save Node
+                if (isImageRequest) {
+                    const block = document.createElement('div');
+                    block.classList.add('pic-render-block');
+
+                    const pic = document.createElement('img');
+                    pic.classList.add('generated-pic');
+                    
+                    // High quality parameters for precise visualization parsing
+                    const finalUrl = `https://image.pollinations.ai/p/${encodeURIComponent(imagePrompt)}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random() * 99999)}`;
+                    pic.src = finalUrl;
+                    pic.alt = imagePrompt;
+
+                    const dlBtn = document.createElement('a');
+                    dlBtn.classList.add('pic-download-btn');
+                    dlBtn.innerHTML = "📥 Save Canvas";
+                    dlBtn.href = finalUrl;
+                    dlBtn.target = "_blank";
+                    dlBtn.download = `ExtinctAi_${Date.now()}.jpg`;
+
+                    block.appendChild(pic);
+                    block.appendChild(dlBtn);
+                    bubble.appendChild(block);
+                }
+
+                const actionsRow = document.createElement('div');
+                actionsRow.classList.add('bubble-actions');
+
+                const ttsBtn = document.createElement('span');
+                ttsBtn.classList.add('action-link');
+                ttsBtn.textContent = "🔊 Speak";
+                ttsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    window.speechSynthesis.cancel();
+                    const speech = new SpeechSynthesisUtterance(text);
+                    const voices = window.speechSynthesis.getVoices();
+                    let primeVoice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Natural") || v.lang.includes("en-US"));
+                    speech.voice = primeVoice || voices[0];
+                    window.speechSynthesis.speak(speech);
+                });
+
+                const copyBtn = document.createElement('span');
+                copyBtn.classList.add('action-link');
+                copyBtn.textContent = "📋 Copy";
+                copyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navigator.clipboard.writeText(text);
+                    copyBtn.textContent = "✔ Done";
+                    setTimeout(() => copyBtn.textContent = "📋 Copy", 1200);
+                });
+
+                const likeBtn = document.createElement('span');
+                likeBtn.classList.add('action-link');
+                likeBtn.textContent = "👍";
+                likeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    likeBtn.classList.toggle('active-like');
+                    dislikeBtn.classList.remove('active-dislike');
+                });
+
+                const dislikeBtn = document.createElement('span');
+                dislikeBtn.classList.add('action-link');
+                dislikeBtn.textContent = "👎";
+                dislikeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dislikeBtn.classList.toggle('active-dislike');
+                    likeBtn.classList.remove('active-like');
+                });
+
+                actionsRow.appendChild(ttsBtn);
+                actionsRow.appendChild(copyBtn);
+                actionsRow.appendChild(likeBtn);
+                actionsRow.appendChild(dislikeBtn);
+                container.appendChild(actionsRow);
+
+                chatBox.appendChild(container);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                if (identity === 'ai' && animate && !isImageRequest) {
+                    let idx = 0;
+                    const textNode = document.createTextNode("");
+                    bubble.appendChild(textNode);
+                    function streamPrint() {
+                        if (idx < text.length) {
+                            textNode.textContent += text.charAt(idx);
+                            idx++;
+                            chatBox.scrollTop = chatBox.scrollHeight;
+                            setTimeout(streamPrint, 15);
+                        }
+                    }
+                    streamPrint();
+                } else {
+                    if (!isImageRequest) {
+                        const textNode = document.createTextNode(text);
+                        bubble.appendChild(textNode);
+                    }
+                }
+
+                memoryMatrix.push({ role: identity === 'user' ? 'user' : 'model', parts: [{ text }] });
+            }
+
+            async function requestAIStream(promptText) {
+                const lowerText = promptText.toLowerCase();
+                
+                if (lowerText.includes("who created you") || lowerText.includes("who is your creator") || lowerText.includes("who made you")) {
+                    setTimeout(() => {
+                        appendInteractiveMessage("I am Extinct Ai, an advanced custom-built neural core network created, scripted, and designed entirely by M.Huraira.", "ai");
+                    }, 200);
+                    return;
+                }
+
+                if (lowerText.includes("create image") || lowerText.includes("create pic") || lowerText.includes("generate image") || lowerText.includes("make a picture") || lowerText.includes("generate a picture") || lowerText.includes("draw")) {
+                    let cleanedPrompt = promptText.replace(/(create image|create pic|generate image|make a picture|generate a picture|draw)/gi, "").trim();
+                    if(!cleanedPrompt) cleanedPrompt = "Cyberpunk structure cinematic blueprint";
+                    
+                    setTimeout(() => {
+                        appendInteractiveMessage(`Compiling layout canvas for exact picture query: "${cleanedPrompt}"...`, "ai", true, true, cleanedPrompt);
+                    }, 300);
+                    return;
+                }
+
+                try {
+                    const payloadContents = memoryMatrix.slice(-6);
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-goog-api-key": GEMINI_API_KEY
+                        },
+                        body: JSON.stringify({ contents: payloadContents })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.candidates && data.candidates[0].content.parts[0].text) {
+                        let reply = data.candidates[0].content.parts[0].text;
+                        if (reply.toLowerCase().includes("google")) {
+                            reply = reply.replace(/Google/gi, "M.Huraira systems");
+                        }
+                        appendInteractiveMessage(reply, "ai");
+                    } else if (data.error) {
+                        keyModal.classList.add('open');
+                    }
+                } catch (err) {
+                    appendInteractiveMessage("CRITICAL FAIL: Sync connection stream severed.", "ai");
+                }
+            }
+
+            function triggerSubmission() {
+                const value = userInput.value.trim();
+                if (!value) return;
+
+                appendInteractiveMessage(value, "user", false);
+                userInput.value = '';
+
+                const tokensEarned = value.length > 25 ? 10 : 5;
+                tokenBalance += tokensEarned;
+                localStorage.setItem('ex_tokens', tokenBalance);
+                tokenCountDisplay.textContent = tokenBalance;
+
+                requestAIStream(value);
+            }
+
+            fileUploader.addEventListener('change', () => {
+                const files = Array.from(fileUploader.files);
+                if (files.length === 0) return;
+
+                if (files.length > 10) {
+                    showCyberToast("SAFETY BLOCKED: 10 photo maximum capacity");
+                    fileUploader.value = '';
+                    return;
+                }
+
+                let loadedImages = [];
+                let loadedCount = 0;
+
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        loadedImages[index] = e.target.result;
+                        loadedCount++;
+
+                        if (loadedCount === files.length) {
+                            appendInteractiveMessage(`Attached and transmitted ${files.length} system file packets.`, "user", false, false, "", loadedImages);
+                            setTimeout(() => {
+                                appendInteractiveMessage(`Processing matrix block arrays for ${files.length} photos. Processing database assets.`, "ai");
+                            }, 500);
+                            fileUploader.value = ''; 
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            proToggleBtn.addEventListener('click', () => {
+                if (isProMode) return;
+                if (tokenBalance >= 200) {
+                    tokenBalance -= 200;
+                    isProMode = true;
+                    localStorage.setItem('ex_tokens', tokenBalance);
+                    localStorage.setItem('ex_pro', 'true');
+                    tokenCountDisplay.textContent = tokenBalance;
+                    updateProModeUI();
+                    appendInteractiveMessage("SUCCESS ACCESS GRANTED: Mainframe shifted into high-performance PRO SUITE dashboard layer.", "ai");
+                } else {
+                    // Trigger new styled tactical UI warning alert component
+                    showCyberToast("CORE OVERLAY DENIED: 200 Core Tokens Required");
+                }
+            });
+
+            saveKeyBtn.addEventListener('click', () => {
+                const freshKey = altKeyInput.value.trim();
+                if (freshKey) {
+                    GEMINI_API_KEY = freshKey;
+                    keyModal.classList.remove('open');
+                    appendInteractiveMessage("SUCCESS: Secondary API gateway token assigned.", "ai");
+                }
+            });
+
+            wipeConsoleBtn.addEventListener('click', initNewChatSession);
+            sendBtn.addEventListener('click', triggerSubmission);
+            userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') triggerSubmission(); });
+
+            initNewChatSession();
+        });
+    </script>
+</body>
+</html>
