@@ -1,733 +1,1628 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Extinct Ai - Core Console</title>
-    <style>
-        :root {
-            --bg-deep: #06070a;
-            --bg-panel: #0c0f16;
-            --bg-card: #131924;
-            --bg-user: #1a2336;
-            --neon-cyan: #00f0ff;
-            --neon-gold: #ffaa00;
-            --neon-glow: rgba(0, 240, 255, 0.25);
-            --text-main: #94a3b8;
-            --text-bright: #ffffff;
-            --status-green: #00ff66;
-            --status-red: #ff4a4a;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINAB CROCHET</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Courier New', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-        html, body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: fixed;
-        }
+:root{
+    --bg:#fffaf7;
+    --card:#ffffff;
+    --text:#292321;
+    --muted:#806f68;
+    --accent:#b86f73;
+    --accent2:#8f4f55;
+    --border:#eadbd5;
+    --shadow:0 15px 45px rgba(70,40,30,.10);
+}
 
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            height: -webkit-fill-available;
-            width: 100vw;
-            position: relative;
-        }
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
 
-        /* --- Header UI --- */
-        .sys-header {
-            background-color: var(--bg-panel);
-            padding: 10px 14px;
-            border-bottom: 2px solid var(--neon-cyan);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1);
-            z-index: 10;
-        }
+button,input,textarea,select{
+    font:inherit;
+}
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+button{
+    cursor:pointer;
+}
 
-        .ai-logo {
-            width: 32px;
-            height: 32px;
-            border: 2px dashed var(--neon-cyan);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--neon-cyan);
-            font-size: 0.8rem;
-            animation: spin 12s linear infinite;
-            box-shadow: 0 0 8px var(--neon-glow);
-        }
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(255,250,247,.94);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+}
 
-        .brand-zone h1 {
-            color: var(--text-bright);
-            font-size: 1.15rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
+.nav{
+    max-width:1200px;
+    margin:auto;
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
 
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.logo{
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--accent2);
+}
 
-        .token-badge {
-            background: rgba(255, 170, 0, 0.1);
-            border: 1px solid var(--neon-gold);
-            color: var(--neon-gold);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+.logo small{
+    display:block;
+    font-size:9px;
+    letter-spacing:4px;
+    color:var(--muted);
+    margin-top:3px;
+}
 
-        .token-icon { color: var(--neon-gold); font-size: 0.9rem; }
+.nav-buttons{
+    display:flex;
+    gap:10px;
+}
 
-        .pro-btn {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+.icon-btn{
+    border:1px solid var(--border);
+    background:white;
+    border-radius:50px;
+    padding:10px 15px;
+    transition:.25s;
+}
 
-        .pro-btn.active {
-            background: var(--neon-cyan);
-            color: #000;
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
+.icon-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+}
 
-        /* --- Meta Strip Info --- */
-        .meta-strip {
-            background: #080a0f;
-            padding: 6px 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
-        }
+.hero{
+    max-width:1200px;
+    margin:auto;
+    padding:75px 20px 45px;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:40px;
+    align-items:center;
+}
 
-        .meta-left span { color: #50617a; }
-        .meta-left strong { color: var(--neon-cyan); }
+.hero h1{
+    font-size:clamp(42px,7vw,78px);
+    line-height:.95;
+    margin-bottom:22px;
+}
 
-        .clear-btn {
-            background: transparent;
-            border: 1px solid #ff4a4a;
-            color: #ff4a4a;
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.hero h1 span{
+    color:var(--accent);
+}
 
-        /* --- Chat Core Area --- */
-        .terminal-feed {
-            flex: 1;
-            padding: 14px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            background-color: var(--bg-deep);
-            background-image: linear-gradient(rgba(255,255,255,0.005) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.005) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
+.hero p{
+    color:var(--muted);
+    line-height:1.8;
+    max-width:580px;
+}
 
-        /* --- Message Bubbles --- */
-        .msg-container {
-            display: flex;
-            flex-direction: column;
-            max-width: 85%;
-            gap: 5px;
-        }
+.hero-card{
+    min-height:370px;
+    border-radius:35px;
+    background:
+    radial-gradient(circle at 30% 20%,#f9dadd,transparent 30%),
+    radial-gradient(circle at 80% 80%,#e7c3c8,transparent 30%),
+    linear-gradient(135deg,#fff,#f5dfdf);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
 
-        .msg-container.ai { align-self: flex-start; }
-        .msg-container.user { align-self: flex-end; }
+.yarn{
+    font-size:130px;
+    animation:float 4s ease-in-out infinite;
+}
 
-        .msg-bubble {
-            padding: 12px 14px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            word-wrap: break-word;
-            border-radius: 8px;
-        }
+@keyframes float{
+    50%{transform:translateY(-15px) rotate(4deg)}
+}
 
-        .ai .msg-bubble {
-            background-color: var(--bg-panel);
-            color: #e2e8f0;
-            border-left: 3px solid var(--neon-cyan);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:45px 20px;
+}
 
-        .user .msg-bubble {
-            background-color: var(--bg-user);
-            color: var(--text-bright);
-            border-right: 3px solid var(--neon-cyan);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        }
+.section-title{
+    text-align:center;
+    margin-bottom:30px;
+}
 
-        /* Photo Grid Layout Framework */
-        .image-preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 6px;
-            margin-bottom: 6px;
-            width: 100%;
-        }
+.section-title h2{
+    font-size:38px;
+}
 
-        .attached-photo {
-            width: 100%;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-        }
+.section-title p{
+    color:var(--muted);
+    margin-top:8px;
+}
 
-        /* Sandbox AI Image Canvas Block */
-        .pic-render-block {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-            max-width: 280px;
-            width: 100%;
-        }
+.filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:25px;
+    justify-content:center;
+}
 
-        .generated-pic {
-            width: 100%;
-            border-radius: 6px;
-            border: 1px solid var(--neon-cyan);
-            box-shadow: 0 0 10px var(--neon-glow);
-            display: block;
-        }
+.filter{
+    border:1px solid var(--border);
+    background:white;
+    padding:10px 18px;
+    border-radius:30px;
+}
 
-        .pic-download-btn {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
+.filter.active,
+.primary{
+    background:var(--accent);
+    color:white;
+    border-color:var(--accent);
+}
 
-        .pic-download-btn:active {
-            background: var(--neon-cyan);
-            color: #000;
-        }
+.products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
 
-        /* --- Cyber Toast System Window --- */
-        .cyber-toast {
-            position: absolute;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: #11070a;
-            border: 1px solid var(--status-red);
-            box-shadow: 0 0 15px rgba(255, 74, 74, 0.2);
-            color: #ffb3b3;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 99;
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
+.product{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(70,40,30,.05);
+    transition:.3s;
+    cursor:pointer;
+}
 
-        .cyber-toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+.product:hover{
+    transform:translateY(-7px);
+    box-shadow:var(--shadow);
+}
 
-        /* --- Utility Action Buttons --- */
-        .bubble-actions {
-            display: flex;
-            gap: 12px;
-            font-size: 0.75rem;
-            padding: 2px 4px;
-            user-select: none;
-        }
+.product-image{
+    height:230px;
+    background:linear-gradient(135deg,#f9e5e4,#ead0d3);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:90px;
+}
 
-        .ai .bubble-actions { justify-content: flex-start; }
-        .user .bubble-actions { justify-content: flex-end; }
+.product-info{
+    padding:20px;
+}
 
-        .action-link { color: #50617a; cursor: pointer; transition: color 0.1s ease; }
-        .action-link:active { color: var(--neon-cyan); }
-        .action-link.active-like { color: var(--status-green) !important; font-weight: bold; }
-        .action-link.active-dislike { color: var(--status-red) !important; font-weight: bold; }
+.product-info h3{
+    margin-bottom:8px;
+}
 
-        /* --- Input Control Deck Footer --- */
-        .control-deck {
-            padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-            background-color: var(--bg-panel);
-            border-top: 1px solid rgba(0, 240, 255, 0.1);
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            z-index: 10;
-        }
+.product-info p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+}
 
-        .add-file-label {
-            width: 42px;
-            height: 42px;
-            background: #131924;
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--neon-cyan);
-            font-size: 1.4rem;
-            cursor: pointer;
-            user-select: none;
-        }
+.price{
+    font-weight:900;
+    font-size:21px;
+    color:var(--accent2);
+    margin-top:13px;
+}
 
-        .add-file-label:active { background: var(--bg-user); }
+.btn{
+    border:0;
+    border-radius:13px;
+    padding:12px 18px;
+    transition:.2s;
+}
 
-        .terminal-input {
-            flex: 1;
-            background-color: #040508;
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 12px;
-            color: var(--text-bright);
-            font-size: 0.95rem;
-            outline: none;
-            height: 42px;
-        }
+.btn:hover{
+    transform:translateY(-2px);
+}
 
-        .action-btn {
-            background: linear-gradient(135deg, #00f0ff 0%, #00b8d4 100%);
-            color: #000000;
-            border: none;
-            border-radius: 6px;
-            padding: 0 16px;
-            height: 42px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
+.full{
+    width:100%;
+}
 
-        /* --- API Fallback Modal Window --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
+.secondary{
+    background:#f4e9e5;
+    color:#68484a;
+}
 
-        .modal-overlay.open { opacity: 1; pointer-events: auto; }
-        .modal-card { background: var(--bg-panel); border: 2px solid var(--neon-cyan); border-radius: 8px; width: 90%; max-width: 340px; padding: 20px; text-align: center; }
-        .modal-card h3 { color: var(--text-bright); margin-bottom: 10px; font-size: 1.1rem; }
-        .modal-card p { font-size: 0.8rem; margin-bottom: 15px; }
-        .api-link { color: var(--neon-cyan); font-size: 0.8rem; display: inline-block; margin-bottom: 15px; text-decoration: underline; }
-        .modal-input { width: 100%; background: #000; border: 1px solid #1e293b; color: #fff; padding: 10px; font-size: 0.85rem; border-radius: 4px; margin-bottom: 15px; outline: none; }
-        .modal-btn { background: var(--neon-cyan); color: #000; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; }
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(20,10,8,.55);
+    backdrop-filter:blur(7px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:5000;
+}
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-    </style>
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(700px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:white;
+    border-radius:28px;
+    padding:28px;
+    animation:pop .25s ease;
+}
+
+@keyframes pop{
+    from{opacity:0;transform:scale(.94) translateY(20px)}
+    to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:#f5eeee;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    font-size:20px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group label{
+    display:block;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    outline:none;
+    background:#fffdfc;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(184,111,115,.1);
+}
+
+.error{
+    color:#c0392b;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.success{
+    color:#27834c;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.progress{
+    display:flex;
+    gap:7px;
+    margin-bottom:25px;
+}
+
+.progress span{
+    height:5px;
+    flex:1;
+    border-radius:10px;
+    background:#eee;
+}
+
+.progress span.active{
+    background:var(--accent);
+}
+
+.summary{
+    background:#fff8f6;
+    border:1px solid var(--border);
+    padding:18px;
+    border-radius:16px;
+    margin-bottom:20px;
+}
+
+.order-card{
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.admin{
+    display:none;
+}
+
+.admin-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+footer{
+    margin-top:50px;
+    background:#292321;
+    color:white;
+    padding:45px 20px;
+    text-align:center;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#292321;
+    color:white;
+    padding:15px 20px;
+    border-radius:14px;
+    z-index:10000;
+    transform:translateY(100px);
+    opacity:0;
+    transition:.3s;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@media(max-width:800px){
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:550px){
+    .products{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding-top:45px;
+    }
+
+    .admin-grid{
+        grid-template-columns:1fr;
+    }
+
+    .nav{
+        padding:13px 15px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="app-container">
-        <header class="sys-header">
-            <div class="logo-area">
-                <div class="ai-logo">EX</div>
-                <div class="brand-zone">
-                    <h1>Extinct Ai</h1>
-                </div>
-            </div>
-            <div class="header-controls">
-                <div class="token-badge">
-                    <span class="token-icon">⧫</span><span id="tokenCount">0</span>
-                </div>
-                <button class="pro-btn" id="proToggleBtn">PRO: OFF</button>
-            </div>
-        </header>
-
-        <section class="meta-strip">
-            <div class="meta-left">
-                <span>Core: <strong>M.Huraira Engine</strong></span>
-            </div>
-            <div>
-                <button class="clear-btn" id="wipeConsoleBtn" style="margin-right: 10px;">CLEAR</button>
-                <span style="color: #50617a;">Mode: <span id="currentModeLabel" style="color:var(--text-bright)">Standard</span></span>
-            </div>
-        </section>
-
-        <main class="terminal-feed" id="chatBox"></main>
-
-        <!-- Dynamic Custom Notification Element -->
-        <div class="cyber-toast" id="systemToast">
-            <span style="color: var(--status-red);">⚠️</span> <span id="toastMsg">ACCESS DENIED</span>
+<header>
+    <div class="nav">
+        <div class="logo">
+            MINAB CROCHET
+            <small>HANDMADE WITH LOVE</small>
         </div>
 
-        <footer class="control-deck">
-            <label for="fileUploader" class="add-file-label">+</label>
-            <input type="file" id="fileUploader" accept="image/*" multiple style="display: none;">
-            <input type="text" id="userInput" class="terminal-input" placeholder="Execute terminal sequence..." autocomplete="off">
-            <button id="sendBtn" class="action-btn">EXECUTE</button>
-        </footer>
-    </div>
-
-    <div class="modal-overlay" id="keyModal">
-        <div class="modal-card">
-            <h3>⚠️ RATE LIMIT REACHED</h3>
-            <p>Your access token has expired. Acquire a secondary string key code to maintain access flow:</p>
-            <a href="https://aistudio.google.com/" target="_blank" class="api-link">Get Google Gemini API Key ↗</a>
-            <input type="text" id="altKeyInput" class="modal-input" placeholder="Paste alternate key registry...">
-            <button id="saveKeyBtn" class="modal-btn">MOUNT NEW KEY</button>
+        <div class="nav-buttons">
+            <button class="icon-btn" onclick="openLogin()">👤 Login</button>
+            <button class="icon-btn" onclick="openAdminLogin()">⚙️ Admin</button>
         </div>
     </div>
+</header>
 
-    <script>
-        let GEMINI_API_KEY = "AQ.Ab8RN6LAeMjT7vzgG6hFeRLXjFg6PbFP7UB7wYy-WYzJUK2-Xw";
-        const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
-        
-        let tokenBalance = parseInt(localStorage.getItem('ex_tokens')) || 0;
-        let isProMode = localStorage.getItem('ex_pro') === 'true';
-        let memoryMatrix = [];
+<main>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const chatBox = document.getElementById('chatBox');
-            const userInput = document.getElementById('userInput');
-            const sendBtn = document.getElementById('sendBtn');
-            const tokenCountDisplay = document.getElementById('tokenCount');
-            const proToggleBtn = document.getElementById('proToggleBtn');
-            const currentModeLabel = document.getElementById('currentModeLabel');
-            const keyModal = document.getElementById('keyModal');
-            const altKeyInput = document.getElementById('altKeyInput');
-            const saveKeyBtn = document.getElementById('saveKeyBtn');
-            const wipeConsoleBtn = document.getElementById('wipeConsoleBtn');
-            const fileUploader = document.getElementById('fileUploader');
-            const systemToast = document.getElementById('systemToast');
-            const toastMsg = document.getElementById('toastMsg');
+<section class="hero">
+    <div>
+        <p style="font-weight:bold;color:#b86f73;">HANDMADE • UNIQUE • BEAUTIFUL</p>
+        <h1>Made by hand.<br><span>Made for you.</span></h1>
+        <p>
+            Welcome to MINAB CROCHET — beautiful handmade crochet creations
+            designed with care, creativity and love.
+        </p>
+        <br>
+        <button class="btn primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+            Shop Collection →
+        </button>
+    </div>
 
-            tokenCountDisplay.textContent = tokenBalance;
-            updateProModeUI();
+    <div class="hero-card">
+        <div class="yarn">🧶</div>
+    </div>
+</section>
 
-            function showCyberToast(message) {
-                toastMsg.textContent = message;
-                systemToast.classList.add('show');
-                setTimeout(() => {
-                    systemToast.classList.remove('show');
-                }, 3000);
-            }
+<section class="section" id="shop">
 
-            function updateProModeUI() {
-                if (isProMode) {
-                    proToggleBtn.textContent = "PRO: ACTIVE";
-                    proToggleBtn.classList.add('active');
-                    currentModeLabel.textContent = "Pro Suite";
-                    currentModeLabel.style.color = "var(--neon-cyan)";
-                } else {
-                    proToggleBtn.textContent = "BUY PRO (200)";
-                    proToggleBtn.classList.remove('active');
-                    currentModeLabel.textContent = "Standard";
-                    currentModeLabel.style.color = "var(--text-bright)";
-                }
-            }
+    <div class="section-title">
+        <h2>Our Collection</h2>
+        <p>Click any product to see details and place an order.</p>
+    </div>
 
-            function initNewChatSession() {
-                chatBox.innerHTML = ''; 
-                memoryMatrix = []; 
-                appendInteractiveMessage("System initialized. Extinct Ai console live. Built, customized, and designed exclusively by M.Huraira.", "ai", false);
-            }
+    <div class="filters">
+        <button class="filter active" onclick="filterProducts('all',this)">All</button>
+        <button class="filter" onclick="filterProducts('bags',this)">Bags</button>
+        <button class="filter" onclick="filterProducts('flowers',this)">Flowers</button>
+        <button class="filter" onclick="filterProducts('keychains',this)">Keychains</button>
+        <button class="filter" onclick="filterProducts('custom',this)">Custom</button>
+    </div>
 
-            function appendInteractiveMessage(text, identity, animate = true, isImageRequest = false, imagePrompt = "", imgSources = []) {
-                const container = document.createElement('div');
-                container.classList.add('msg-container', identity);
+    <div class="products" id="products"></div>
 
-                const bubble = document.createElement('div');
-                bubble.classList.add('msg-bubble');
+</section>
 
-                if (imgSources && imgSources.length > 0) {
-                    const grid = document.createElement('div');
-                    grid.classList.add('image-preview-grid');
-                    imgSources.forEach(src => {
-                        const img = document.createElement('img');
-                        img.classList.add('attached-photo');
-                        img.src = src;
-                        grid.appendChild(img);
-                    });
-                    bubble.appendChild(grid);
-                }
+<section class="section admin" id="adminPanel">
 
-                container.appendChild(bubble);
+    <div class="section-title">
+        <h2>Admin Dashboard</h2>
+        <p>MINAB CROCHET management panel</p>
+    </div>
 
-                // Setup Upgraded High-Definition Image Block with Local Storage Save Node
-                if (isImageRequest) {
-                    const block = document.createElement('div');
-                    block.classList.add('pic-render-block');
+    <div class="summary">
+        <strong>Admin Account:</strong> MinabAdmin
+        <button class="btn secondary" style="float:right" onclick="logoutAdmin()">Logout</button>
+    </div>
 
-                    const pic = document.createElement('img');
-                    pic.classList.add('generated-pic');
-                    
-                    // High quality parameters for precise visualization parsing
-                    const finalUrl = `https://image.pollinations.ai/p/${encodeURIComponent(imagePrompt)}?width=1024&height=1024&nologo=true&seed=${Math.floor(Math.random() * 99999)}`;
-                    pic.src = finalUrl;
-                    pic.alt = imagePrompt;
+    <h3>Products</h3>
+    <br>
 
-                    const dlBtn = document.createElement('a');
-                    dlBtn.classList.add('pic-download-btn');
-                    dlBtn.innerHTML = "📥 Save Canvas";
-                    dlBtn.href = finalUrl;
-                    dlBtn.target = "_blank";
-                    dlBtn.download = `ExtinctAi_${Date.now()}.jpg`;
+    <div id="adminProducts"></div>
 
-                    block.appendChild(pic);
-                    block.appendChild(dlBtn);
-                    bubble.appendChild(block);
-                }
+    <br><br>
 
-                const actionsRow = document.createElement('div');
-                actionsRow.classList.add('bubble-actions');
+    <h3>Saved Orders</h3>
+    <br>
 
-                const ttsBtn = document.createElement('span');
-                ttsBtn.classList.add('action-link');
-                ttsBtn.textContent = "🔊 Speak";
-                ttsBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    window.speechSynthesis.cancel();
-                    const speech = new SpeechSynthesisUtterance(text);
-                    const voices = window.speechSynthesis.getVoices();
-                    let primeVoice = voices.find(v => v.name.includes("Google US English") || v.name.includes("Natural") || v.lang.includes("en-US"));
-                    speech.voice = primeVoice || voices[0];
-                    window.speechSynthesis.speak(speech);
-                });
+    <div id="adminOrders"></div>
 
-                const copyBtn = document.createElement('span');
-                copyBtn.classList.add('action-link');
-                copyBtn.textContent = "📋 Copy";
-                copyBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    navigator.clipboard.writeText(text);
-                    copyBtn.textContent = "✔ Done";
-                    setTimeout(() => copyBtn.textContent = "📋 Copy", 1200);
-                });
+    <br><br>
 
-                const likeBtn = document.createElement('span');
-                likeBtn.classList.add('action-link');
-                likeBtn.textContent = "👍";
-                likeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    likeBtn.classList.toggle('active-like');
-                    dislikeBtn.classList.remove('active-dislike');
-                });
+    <h3>Registered Users</h3>
+    <br>
 
-                const dislikeBtn = document.createElement('span');
-                dislikeBtn.classList.add('action-link');
-                dislikeBtn.textContent = "👎";
-                dislikeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    dislikeBtn.classList.toggle('active-dislike');
-                    likeBtn.classList.remove('active-like');
-                });
+    <div id="adminUsers"></div>
 
-                actionsRow.appendChild(ttsBtn);
-                actionsRow.appendChild(copyBtn);
-                actionsRow.appendChild(likeBtn);
-                actionsRow.appendChild(dislikeBtn);
-                container.appendChild(actionsRow);
+</section>
 
-                chatBox.appendChild(container);
-                chatBox.scrollTop = chatBox.scrollHeight;
+</main>
 
-                if (identity === 'ai' && animate && !isImageRequest) {
-                    let idx = 0;
-                    const textNode = document.createTextNode("");
-                    bubble.appendChild(textNode);
-                    function streamPrint() {
-                        if (idx < text.length) {
-                            textNode.textContent += text.charAt(idx);
-                            idx++;
-                            chatBox.scrollTop = chatBox.scrollHeight;
-                            setTimeout(streamPrint, 15);
-                        }
-                    }
-                    streamPrint();
-                } else {
-                    if (!isImageRequest) {
-                        const textNode = document.createTextNode(text);
-                        bubble.appendChild(textNode);
-                    }
-                }
+<footer>
+    <h2>MINAB CROCHET</h2>
+    <p style="margin-top:10px;color:#ddd;">Handmade with love 🤍</p>
+    <p style="margin-top:20px;font-size:13px;color:#aaa;">
+        © 2026 MINAB CROCHET. All rights reserved.
+    </p>
+</footer>
 
-                memoryMatrix.push({ role: identity === 'user' ? 'user' : 'model', parts: [{ text }] });
-            }
 
-            async function requestAIStream(promptText) {
-                const lowerText = promptText.toLowerCase();
-                
-                if (lowerText.includes("who created you") || lowerText.includes("who is your creator") || lowerText.includes("who made you")) {
-                    setTimeout(() => {
-                        appendInteractiveMessage("I am Extinct Ai, an advanced custom-built neural core network created, scripted, and designed entirely by M.Huraira.", "ai");
-                    }, 200);
-                    return;
-                }
+<!-- PRODUCT MODAL -->
 
-                if (lowerText.includes("create image") || lowerText.includes("create pic") || lowerText.includes("generate image") || lowerText.includes("make a picture") || lowerText.includes("generate a picture") || lowerText.includes("draw")) {
-                    let cleanedPrompt = promptText.replace(/(create image|create pic|generate image|make a picture|generate a picture|draw)/gi, "").trim();
-                    if(!cleanedPrompt) cleanedPrompt = "Cyberpunk structure cinematic blueprint";
-                    
-                    setTimeout(() => {
-                        appendInteractiveMessage(`Compiling layout canvas for exact picture query: "${cleanedPrompt}"...`, "ai", true, true, cleanedPrompt);
-                    }, 300);
-                    return;
-                }
+<div class="modal" id="productModal">
+    <div class="modal-box">
 
-                try {
-                    const payloadContents = memoryMatrix.slice(-6);
-                    const response = await fetch(API_URL, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-goog-api-key": GEMINI_API_KEY
-                        },
-                        body: JSON.stringify({ contents: payloadContents })
-                    });
+        <div class="modal-head">
+            <h2 id="modalProductName">Product</h2>
+            <button class="close" onclick="closeModal('productModal')">×</button>
+        </div>
 
-                    const data = await response.json();
+        <div id="productDetails"></div>
 
-                    if (data.candidates && data.candidates[0].content.parts[0].text) {
-                        let reply = data.candidates[0].content.parts[0].text;
-                        if (reply.toLowerCase().includes("google")) {
-                            reply = reply.replace(/Google/gi, "M.Huraira systems");
-                        }
-                        appendInteractiveMessage(reply, "ai");
-                    } else if (data.error) {
-                        keyModal.classList.add('open');
-                    }
-                } catch (err) {
-                    appendInteractiveMessage("CRITICAL FAIL: Sync connection stream severed.", "ai");
-                }
-            }
+        <button class="btn primary full" onclick="startOrder()">
+            Buy / Customize →
+        </button>
 
-            function triggerSubmission() {
-                const value = userInput.value.trim();
-                if (!value) return;
+    </div>
+</div>
 
-                appendInteractiveMessage(value, "user", false);
-                userInput.value = '';
 
-                const tokensEarned = value.length > 25 ? 10 : 5;
-                tokenBalance += tokensEarned;
-                localStorage.setItem('ex_tokens', tokenBalance);
-                tokenCountDisplay.textContent = tokenBalance;
+<!-- ORDER MODAL -->
 
-                requestAIStream(value);
-            }
+<div class="modal" id="orderModal">
+    <div class="modal-box">
 
-            fileUploader.addEventListener('change', () => {
-                const files = Array.from(fileUploader.files);
-                if (files.length === 0) return;
+        <div class="modal-head">
+            <h2>Complete Your Order</h2>
+            <button class="close" onclick="closeModal('orderModal')">×</button>
+        </div>
 
-                if (files.length > 10) {
-                    showCyberToast("SAFETY BLOCKED: 10 photo maximum capacity");
-                    fileUploader.value = '';
-                    return;
-                }
+        <div class="progress">
+            <span id="p1" class="active"></span>
+            <span id="p2"></span>
+        </div>
 
-                let loadedImages = [];
-                let loadedCount = 0;
+        <div id="customerStep">
 
-                files.forEach((file, index) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        loadedImages[index] = e.target.result;
-                        loadedCount++;
+            <h3>Customer Information</h3>
+            <p style="color:#806f68;margin:7px 0 20px;">
+                Please enter your information correctly.
+            </p>
 
-                        if (loadedCount === files.length) {
-                            appendInteractiveMessage(`Attached and transmitted ${files.length} system file packets.`, "user", false, false, "", loadedImages);
-                            setTimeout(() => {
-                                appendInteractiveMessage(`Processing matrix block arrays for ${files.length} photos. Processing database assets.`, "ai");
-                            }, 500);
-                            fileUploader.value = ''; 
-                        }
-                    };
-                    reader.readAsDataURL(file);
-                });
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input id="fullName" type="text" placeholder="Your full name">
+                <div id="fullNameError" class="error"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Address *</label>
+                <textarea id="address" rows="3" placeholder="Complete address"></textarea>
+                <div id="addressError" class="error"></div>
+            </div>
+
+            <div class="admin-grid">
+
+                <div class="form-group">
+                    <label>Area *</label>
+                    <input id="area" type="text" placeholder="Your area">
+                    <div id="areaError" class="error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>City *</label>
+                    <input id="city" type="text" placeholder="City">
+                    <div id="cityError" class="error"></div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input id="phone" type="tel" placeholder="03XXXXXXXXX">
+                <div id="phoneError" class="error"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Gmail *</label>
+                <input id="gmail" type="email" placeholder="example@gmail.com">
+                <div id="gmailError" class="error"></div>
+            </div>
+
+            <button class="btn primary full" onclick="continueToCustomization()">
+                Continue →
+            </button>
+
+        </div>
+
+
+        <div id="customizationStep" style="display:none">
+
+            <h3>Customize Your Product</h3>
+
+            <div class="summary">
+                <strong id="selectedProductText"></strong>
+                <br>
+                Price: <span id="selectedPrice"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Color *</label>
+                <select id="color">
+                    <option value="">Select color</option>
+                    <option>Black</option>
+                    <option>White</option>
+                    <option>Cream</option>
+                    <option>Pink</option>
+                    <option>Brown</option>
+                    <option>Red</option>
+                    <option>Blue</option>
+                    <option>Custom Color</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Size *</label>
+                <select id="size">
+                    <option value="">Select size</option>
+                    <option>Small</option>
+                    <option>Medium</option>
+                    <option>Large</option>
+                    <option>Custom Size</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Design / Custom Request</label>
+                <textarea id="design" rows="4"
+                placeholder="Tell us your preferred design, pattern, initials, etc."></textarea>
+            </div>
+
+            <div class="error" id="customError"></div>
+
+            <button class="btn primary full" onclick="placeOrder()">
+                Confirm Order ✓
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- LOGIN MODAL -->
+
+<div class="modal" id="loginModal">
+    <div class="modal-box">
+
+        <div class="modal-head">
+            <h2>MINAB Account</h2>
+            <button class="close" onclick="closeModal('loginModal')">×</button>
+        </div>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input id="username" placeholder="Enter username">
+            <div id="usernameError" class="error"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input id="userPassword" type="password" placeholder="Create / enter password">
+        </div>
+
+        <button class="btn primary full" onclick="loginOrRegister()">
+            Continue
+        </button>
+
+        <p style="margin-top:15px;font-size:13px;color:#806f68;">
+            New usernames are automatically registered.
+        </p>
+
+    </div>
+</div>
+
+
+<!-- ADMIN LOGIN -->
+
+<div class="modal" id="adminLoginModal">
+    <div class="modal-box">
+
+        <div class="modal-head">
+            <h2>Admin Login</h2>
+            <button class="close" onclick="closeModal('adminLoginModal')">×</button>
+        </div>
+
+        <div class="form-group">
+            <label>Admin Username</label>
+            <input id="adminUsername" placeholder="Username">
+        </div>
+
+        <div class="form-group">
+            <label>Admin Password</label>
+            <input id="adminPassword" type="password" placeholder="Password">
+        </div>
+
+        <div id="adminError" class="error"></div>
+
+        <button class="btn primary full" onclick="adminLogin()">
+            Continue
+        </button>
+
+    </div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   MINAB CROCHET DATABASE
+   Browser localStorage version
+   ========================================================= */
+
+const ADMIN_USERNAME = "MinabAdmin";
+const ADMIN_PASSWORD = "okaybutidc7";
+
+let products = JSON.parse(localStorage.getItem("minab_products")) || [
+
+    {
+        id:1,
+        name:"Crochet Flower Bouquet",
+        category:"flowers",
+        price:1800,
+        emoji:"💐",
+        description:"Beautiful handmade crochet flowers."
+    },
+
+    {
+        id:2,
+        name:"Crochet Mini Bag",
+        category:"bags",
+        price:2200,
+        emoji:"👜",
+        description:"Cute handmade crochet mini bag."
+    },
+
+    {
+        id:3,
+        name:"Crochet Keychain",
+        category:"keychains",
+        price:500,
+        emoji:"🔑",
+        description:"Small handmade crochet keychain."
+    },
+
+    {
+        id:4,
+        name:"Custom Crochet Gift",
+        category:"custom",
+        price:2500,
+        emoji:"🎁",
+        description:"Customized handmade crochet gift."
+    },
+
+    {
+        id:5,
+        name:"Crochet Teddy",
+        category:"custom",
+        price:1800,
+        emoji:"🧸",
+        description:"Soft handmade crochet teddy."
+    },
+
+    {
+        id:6,
+        name:"Crochet Heart",
+        category:"flowers",
+        price:700,
+        emoji:"❤️",
+        description:"Cute handmade crochet heart."
+    }
+
+];
+
+let users = JSON.parse(localStorage.getItem("minab_users")) || [];
+let orders = JSON.parse(localStorage.getItem("minab_orders")) || [];
+
+let selectedProduct = null;
+let currentFilter = "all";
+
+
+/* =========================================================
+   DATABASE SAVE
+   ========================================================= */
+
+function saveDatabase(){
+
+    localStorage.setItem(
+        "minab_products",
+        JSON.stringify(products)
+    );
+
+    localStorage.setItem(
+        "minab_users",
+        JSON.stringify(users)
+    );
+
+    localStorage.setItem(
+        "minab_orders",
+        JSON.stringify(orders)
+    );
+}
+
+
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+
+function renderProducts(){
+
+    const container = document.getElementById("products");
+
+    let list = products;
+
+    if(currentFilter !== "all"){
+        list = products.filter(
+            p => p.category === currentFilter
+        );
+    }
+
+    container.innerHTML = list.map(product => `
+
+        <div class="product"
+             onclick="openProduct(${product.id})">
+
+            <div class="product-image">
+                ${product.emoji}
+            </div>
+
+            <div class="product-info">
+
+                <h3>${escapeHTML(product.name)}</h3>
+
+                <p>
+                    ${escapeHTML(product.description)}
+                </p>
+
+                <div class="price">
+                    Rs. ${Number(product.price).toLocaleString()}
+                </div>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+
+
+function filterProducts(category,button){
+
+    currentFilter = category;
+
+    document
+        .querySelectorAll(".filter")
+        .forEach(x => x.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderProducts();
+}
+
+
+/* =========================================================
+   PRODUCT PAGE / DETAILS
+   ========================================================= */
+
+function openProduct(id){
+
+    selectedProduct = products.find(p => p.id === id);
+
+    if(!selectedProduct) return;
+
+    document.getElementById("modalProductName").textContent =
+        selectedProduct.name;
+
+    document.getElementById("productDetails").innerHTML = `
+
+        <div class="product-image"
+             style="height:260px;border-radius:20px;margin-bottom:20px;">
+            ${selectedProduct.emoji}
+        </div>
+
+        <h3>${escapeHTML(selectedProduct.name)}</h3>
+
+        <p style="color:#806f68;margin-top:10px;line-height:1.7;">
+            ${escapeHTML(selectedProduct.description)}
+        </p>
+
+        <div class="price">
+            Rs. ${Number(selectedProduct.price).toLocaleString()}
+        </div>
+
+        <br>
+
+        <div class="summary">
+            Handmade product<br>
+            Custom colors available<br>
+            Custom sizes available<br>
+            Custom designs available
+        </div>
+    `;
+
+    openModal("productModal");
+}
+
+
+function startOrder(){
+
+    closeModal("productModal");
+
+    document.getElementById("customerStep").style.display = "block";
+    document.getElementById("customizationStep").style.display = "none";
+
+    document.getElementById("p1").classList.add("active");
+    document.getElementById("p2").classList.remove("active");
+
+    openModal("orderModal");
+}
+
+
+/* =========================================================
+   CUSTOMER VALIDATION
+   ========================================================= */
+
+function continueToCustomization(){
+
+    clearErrors();
+
+    const fullName =
+        document.getElementById("fullName").value.trim();
+
+    const address =
+        document.getElementById("address").value.trim();
+
+    const area =
+        document.getElementById("area").value.trim();
+
+    const city =
+        document.getElementById("city").value.trim();
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const gmail =
+        document.getElementById("gmail").value.trim();
+
+    let valid = true;
+
+    if(fullName.length < 3){
+        showError("fullNameError","Enter your full name.");
+        valid = false;
+    }
+
+    if(address.length < 5){
+        showError("addressError","Enter your complete address.");
+        valid = false;
+    }
+
+    if(area.length < 2){
+        showError("areaError","Enter your area.");
+        valid = false;
+    }
+
+    if(city.length < 2){
+        showError("cityError","Enter your city.");
+        valid = false;
+    }
+
+    if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
+        showError("phoneError","Enter a valid phone number.");
+        valid = false;
+    }
+
+    if(!/^[^\s@]+@gmail\.com$/i.test(gmail)){
+        showError(
+            "gmailError",
+            "Please enter a valid Gmail address."
+        );
+        valid = false;
+    }
+
+    if(!valid) return;
+
+    document.getElementById("customerStep").style.display = "none";
+    document.getElementById("customizationStep").style.display = "block";
+
+    document.getElementById("p1").classList.remove("active");
+    document.getElementById("p2").classList.add("active");
+
+    document.getElementById("selectedProductText").textContent =
+        selectedProduct.name;
+
+    document.getElementById("selectedPrice").textContent =
+        "Rs. " + Number(selectedProduct.price).toLocaleString();
+
+}
+
+
+function clearErrors(){
+
+    document
+        .querySelectorAll(".error")
+        .forEach(e => e.textContent = "");
+
+}
+
+
+function showError(id,message){
+
+    document.getElementById(id).textContent = message;
+
+}
+
+
+/* =========================================================
+   ORDER
+   ========================================================= */
+
+function placeOrder(){
+
+    const color =
+        document.getElementById("color").value;
+
+    const size =
+        document.getElementById("size").value;
+
+    const design =
+        document.getElementById("design").value.trim();
+
+    const customError =
+        document.getElementById("customError");
+
+    customError.textContent = "";
+
+    if(!color){
+
+        customError.textContent =
+            "Please select a color.";
+
+        return;
+    }
+
+    if(!size){
+
+        customError.textContent =
+            "Please select a size.";
+
+        return;
+    }
+
+    const order = {
+
+        id:
+            "ORD-" +
+            Date.now(),
+
+        date:
+            new Date().toLocaleString(),
+
+        product:{
+            id:selectedProduct.id,
+            name:selectedProduct.name,
+            price:selectedProduct.price
+        },
+
+        customer:{
+            fullName:
+                document.getElementById("fullName").value.trim(),
+
+            address:
+                document.getElementById("address").value.trim(),
+
+            area:
+                document.getElementById("area").value.trim(),
+
+            city:
+                document.getElementById("city").value.trim(),
+
+            phone:
+                document.getElementById("phone").value.trim(),
+
+            gmail:
+                document.getElementById("gmail").value.trim()
+        },
+
+        customization:{
+            color:color,
+            size:size,
+            design:design
+        },
+
+        status:"New"
+
+    };
+
+    orders.push(order);
+
+    saveDatabase();
+
+    closeModal("orderModal");
+
+    showToast(
+        "Order saved successfully! Order ID: " +
+        order.id
+    );
+
+    resetOrderForm();
+
+}
+
+
+function resetOrderForm(){
+
+    document
+        .querySelectorAll("#orderModal input,#orderModal textarea")
+        .forEach(x => x.value = "");
+
+    document
+        .querySelectorAll("#orderModal select")
+        .forEach(x => x.selectedIndex = 0);
+
+}
+
+
+/* =========================================================
+   USER LOGIN / REGISTER
+   ========================================================= */
+
+function openLogin(){
+
+    openModal("loginModal");
+
+}
+
+
+function loginOrRegister(){
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("userPassword").value;
+
+    const error =
+        document.getElementById("usernameError");
+
+    error.textContent = "";
+
+    if(username.length < 3){
+
+        error.textContent =
+            "Username must contain at least 3 characters.";
+
+        return;
+    }
+
+    if(username.toLowerCase() === ADMIN_USERNAME.toLowerCase()){
+
+        error.textContent =
+            "This username is reserved for administration.";
+
+        return;
+    }
+
+    if(password.length < 4){
+
+        error.textContent =
+            "Password must contain at least 4 characters.";
+
+        return;
+    }
+
+    const existing =
+        users.find(
+            u => u.username.toLowerCase() === username.toLowerCase()
+        );
+
+    if(existing){
+
+        if(existing.password !== password){
+
+            error.textContent =
+                "Username exists, but the password is incorrect.";
+
+            return;
+        }
+
+        localStorage.setItem(
+            "minab_current_user",
+            username
+        );
+
+        closeModal("loginModal");
+
+        showToast("Welcome back, " + username + "!");
+        return;
+    }
+
+    users.push({
+
+        id:Date.now(),
+
+        username:username,
+
+        password:password,
+
+        createdAt:
+            new Date().toLocaleString()
+
+    });
+
+    saveDatabase();
+
+    localStorage.setItem(
+        "minab_current_user",
+        username
+    );
+
+    closeModal("loginModal");
+
+    showToast(
+        "Account created successfully!"
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+function openAdminLogin(){
+
+    openModal("adminLoginModal");
+
+}
+
+
+function adminLogin(){
+
+    const username =
+        document.getElementById("adminUsername").value.trim();
+
+    const password =
+        document.getElementById("adminPassword").value;
+
+    const error =
+        document.getElementById("adminError");
+
+    error.textContent = "";
+
+    if(
+        username === ADMIN_USERNAME &&
+        password === ADMIN_PASSWORD
+    ){
+
+        localStorage.setItem(
+            "minab_admin_logged",
+            "true"
+        );
+
+        closeModal("adminLoginModal");
+
+        document.getElementById("adminPanel").style.display =
+            "block";
+
+        document
+            .getElementById("adminPanel")
+            .scrollIntoView({
+                behavior:"smooth"
             });
 
-            proToggleBtn.addEventListener('click', () => {
-                if (isProMode) return;
-                if (tokenBalance >= 200) {
-                    tokenBalance -= 200;
-                    isProMode = true;
-                    localStorage.setItem('ex_tokens', tokenBalance);
-                    localStorage.setItem('ex_pro', 'true');
-                    tokenCountDisplay.textContent = tokenBalance;
-                    updateProModeUI();
-                    appendInteractiveMessage("SUCCESS ACCESS GRANTED: Mainframe shifted into high-performance PRO SUITE dashboard layer.", "ai");
-                } else {
-                    // Trigger new styled tactical UI warning alert component
-                    showCyberToast("CORE OVERLAY DENIED: 200 Core Tokens Required");
-                }
-            });
+        renderAdmin();
 
-            saveKeyBtn.addEventListener('click', () => {
-                const freshKey = altKeyInput.value.trim();
-                if (freshKey) {
-                    GEMINI_API_KEY = freshKey;
-                    keyModal.classList.remove('open');
-                    appendInteractiveMessage("SUCCESS: Secondary API gateway token assigned.", "ai");
-                }
-            });
+        showToast("Admin login successful.");
 
-            wipeConsoleBtn.addEventListener('click', initNewChatSession);
-            sendBtn.addEventListener('click', triggerSubmission);
-            userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') triggerSubmission(); });
+    }else{
 
-            initNewChatSession();
+        error.textContent =
+            "Incorrect admin username or password.";
+
+    }
+
+}
+
+
+function logoutAdmin(){
+
+    localStorage.removeItem("minab_admin_logged");
+
+    document.getElementById("adminPanel").style.display =
+        "none";
+
+    showToast("Admin logged out.");
+
+}
+
+
+/* =========================================================
+   ADMIN PRODUCT MANAGEMENT
+   ========================================================= */
+
+function renderAdmin(){
+
+    const container =
+        document.getElementById("adminProducts");
+
+    container.innerHTML = products.map(product => `
+
+        <div class="order-card">
+
+            <div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap">
+
+                <div>
+                    <strong>${escapeHTML(product.name)}</strong>
+                    <br>
+                    <small>${escapeHTML(product.category)}</small>
+                </div>
+
+                <div style="display:flex;gap:8px;align-items:center">
+
+                    <span>Rs.</span>
+
+                    <input
+                        type="number"
+                        id="price-${product.id}"
+                        value="${product.price}"
+                        style="width:120px;padding:9px;border:1px solid #eadbd5;border-radius:9px"
+                    >
+
+                    <button
+                        class="btn primary"
+                        onclick="updatePrice(${product.id})">
+                        Save
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+
+    const orderContainer =
+        document.getElementById("adminOrders");
+
+    if(orders.length === 0){
+
+        orderContainer.innerHTML =
+            "<p>No orders yet.</p>";
+
+    }else{
+
+        orderContainer.innerHTML =
+            orders.slice().reverse().map(order => `
+
+                <div class="order-card">
+
+                    <strong>${escapeHTML(order.id)}</strong>
+
+                    <p>
+                        ${escapeHTML(order.product.name)}
+                        — Rs. ${Number(order.product.price).toLocaleString()}
+                    </p>
+
+                    <p>
+                        Customer:
+                        ${escapeHTML(order.customer.fullName)}
+                    </p>
+
+                    <p>
+                        Phone:
+                        ${escapeHTML(order.customer.phone)}
+                    </p>
+
+                    <p>
+                        ${escapeHTML(order.customer.area)},
+                        ${escapeHTML(order.customer.city)}
+                    </p>
+
+                    <p>
+                        Color:
+                        ${escapeHTML(order.customization.color)}
+                        |
+                        Size:
+                        ${escapeHTML(order.customization.size)}
+                    </p>
+
+                    <p>
+                        Design:
+                        ${escapeHTML(order.customization.design || "None")}
+                    </p>
+
+                    <small>${escapeHTML(order.date)}</small>
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    const usersContainer =
+        document.getElementById("adminUsers");
+
+    if(users.length === 0){
+
+        usersContainer.innerHTML =
+            "<p>No registered users yet.</p>";
+
+    }else{
+
+        usersContainer.innerHTML =
+            users.map(user => `
+
+                <div class="order-card">
+
+                    <strong>
+                        ${escapeHTML(user.username)}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        Created:
+                        ${escapeHTML(user.createdAt)}
+                    </small>
+
+                </div>
+
+            `).join("");
+
+    }
+
+}
+
+
+function updatePrice(id){
+
+    const input =
+        document.getElementById("price-" + id);
+
+    const price =
+        Number(input.value);
+
+    if(!price || price < 0){
+
+        showToast("Enter a valid price.");
+
+        return;
+    }
+
+    const product =
+        products.find(p => p.id === id);
+
+    if(product){
+
+        product.price = price;
+
+        saveDatabase();
+
+        renderProducts();
+
+        renderAdmin();
+
+        showToast(
+            product.name + " price updated."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MODALS
+   ========================================================= */
+
+function openModal(id){
+
+    document
+        .getElementById(id)
+        .classList.add("show");
+
+}
+
+
+function closeModal(id){
+
+    document
+        .getElementById(id)
+        .classList.remove("show");
+
+}
+
+
+document
+    .querySelectorAll(".modal")
+    .forEach(modal => {
+
+        modal.addEventListener("click",function(e){
+
+            if(e.target === modal){
+
+                modal.classList.remove("show");
+
+            }
+
         });
-    </script>
+
+    });
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },3500);
+
+}
+
+
+/* =========================================================
+   SECURITY / DISPLAY ESCAPING
+   ========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   STARTUP
+   ========================================================= */
+
+renderProducts();
+
+if(
+    localStorage.getItem("minab_admin_logged") === "true"
+){
+
+    document.getElementById("adminPanel").style.display =
+        "block";
+
+    renderAdmin();
+
+}
+
+</script>
+
 </body>
 </html>
