@@ -7,21 +7,24 @@
 
 <style>
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
+    box-sizing:border-box;
     font-family:Arial,Helvetica,sans-serif;
 }
 
 :root{
-    --bg:#fffaf7;
+    --bg:#fff9f6;
     --card:#ffffff;
     --text:#292321;
     --muted:#806f68;
-    --accent:#b86f73;
-    --accent2:#8f4f55;
+    --pink:#b86f73;
+    --darkpink:#8f4f55;
     --border:#eadbd5;
-    --shadow:0 15px 45px rgba(70,40,30,.10);
+    --soft:#f7e9e5;
+    --green:#2d8a55;
+    --red:#c0392b;
+    --shadow:0 18px 50px rgba(70,40,30,.12);
 }
 
 body{
@@ -38,11 +41,111 @@ button{
     cursor:pointer;
 }
 
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+/* LOADING */
+
+#loadingScreen{
+    position:fixed;
+    inset:0;
+    background:#fff9f6;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+
+.loader{
+    width:45px;
+    height:45px;
+    border:4px solid #eadbd5;
+    border-top-color:#b86f73;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+/* LOGIN */
+
+#startScreen{
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 20% 20%,#f8dddd,transparent 30%),
+        radial-gradient(circle at 80% 80%,#ead0d3,transparent 30%),
+        #fff9f6;
+    z-index:9000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.login-card{
+    width:min(450px,100%);
+    background:white;
+    border:1px solid var(--border);
+    border-radius:30px;
+    padding:35px;
+    box-shadow:var(--shadow);
+    animation:cardIn .5s ease;
+}
+
+@keyframes cardIn{
+    from{
+        opacity:0;
+        transform:translateY(25px) scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.login-logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.login-logo h1{
+    color:var(--darkpink);
+    letter-spacing:3px;
+    font-size:30px;
+}
+
+.login-logo p{
+    color:var(--muted);
+    font-size:11px;
+    letter-spacing:4px;
+    margin-top:5px;
+}
+
+.login-icon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:var(--soft);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    margin:0 auto 18px;
+}
+
+/* HEADER */
+
 header{
     position:sticky;
     top:0;
     z-index:1000;
-    background:rgba(255,250,247,.94);
+    background:rgba(255,249,246,.94);
     backdrop-filter:blur(15px);
     border-bottom:1px solid var(--border);
 }
@@ -50,23 +153,23 @@ header{
 .nav{
     max-width:1200px;
     margin:auto;
-    padding:18px 20px;
+    padding:17px 20px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    gap:20px;
+    justify-content:space-between;
+    gap:15px;
 }
 
 .logo{
-    font-size:25px;
+    font-size:24px;
     font-weight:900;
     letter-spacing:2px;
-    color:var(--accent2);
+    color:var(--darkpink);
 }
 
 .logo small{
     display:block;
-    font-size:9px;
+    font-size:8px;
     letter-spacing:4px;
     color:var(--muted);
     margin-top:3px;
@@ -74,60 +177,95 @@ header{
 
 .nav-buttons{
     display:flex;
-    gap:10px;
+    gap:8px;
+    align-items:center;
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    padding:12px 18px;
+    border-radius:13px;
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.primary{
+    background:var(--pink);
+    color:white;
+}
+
+.primary:hover{
+    background:var(--darkpink);
+}
+
+.secondary{
+    background:var(--soft);
+    color:var(--darkpink);
 }
 
 .icon-btn{
     border:1px solid var(--border);
     background:white;
+    padding:10px 14px;
     border-radius:50px;
-    padding:10px 15px;
-    transition:.25s;
 }
 
 .icon-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:var(--shadow);
+    box-shadow:0 8px 20px rgba(70,40,30,.08);
 }
+
+/* HERO */
 
 .hero{
     max-width:1200px;
     margin:auto;
-    padding:75px 20px 45px;
+    padding:70px 20px 45px;
     display:grid;
     grid-template-columns:1.1fr .9fr;
     gap:40px;
     align-items:center;
 }
 
+.hero-label{
+    color:var(--pink);
+    font-size:13px;
+    font-weight:bold;
+    letter-spacing:2px;
+    margin-bottom:15px;
+}
+
 .hero h1{
-    font-size:clamp(42px,7vw,78px);
+    font-size:clamp(43px,7vw,78px);
     line-height:.95;
     margin-bottom:22px;
 }
 
 .hero h1 span{
-    color:var(--accent);
+    color:var(--pink);
 }
 
 .hero p{
     color:var(--muted);
     line-height:1.8;
-    max-width:580px;
+    max-width:570px;
 }
 
 .hero-card{
     min-height:370px;
     border-radius:35px;
     background:
-    radial-gradient(circle at 30% 20%,#f9dadd,transparent 30%),
-    radial-gradient(circle at 80% 80%,#e7c3c8,transparent 30%),
-    linear-gradient(135deg,#fff,#f5dfdf);
+        radial-gradient(circle at 25% 20%,#f8d9dc,transparent 28%),
+        radial-gradient(circle at 80% 80%,#e7c1c7,transparent 32%),
+        linear-gradient(135deg,#fff,#f3dddd);
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     box-shadow:var(--shadow);
-    overflow:hidden;
 }
 
 .yarn{
@@ -136,8 +274,12 @@ header{
 }
 
 @keyframes float{
-    50%{transform:translateY(-15px) rotate(4deg)}
+    50%{
+        transform:translateY(-15px) rotate(4deg);
+    }
 }
+
+/* SECTIONS */
 
 .section{
     max-width:1200px;
@@ -159,12 +301,14 @@ header{
     margin-top:8px;
 }
 
+/* FILTERS */
+
 .filters{
     display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-bottom:25px;
     justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin-bottom:25px;
 }
 
 .filter{
@@ -174,12 +318,13 @@ header{
     border-radius:30px;
 }
 
-.filter.active,
-.primary{
-    background:var(--accent);
+.filter.active{
+    background:var(--pink);
     color:white;
-    border-color:var(--accent);
+    border-color:var(--pink);
 }
+
+/* PRODUCTS */
 
 .products{
     display:grid;
@@ -188,27 +333,33 @@ header{
 }
 
 .product{
-    background:var(--card);
+    background:white;
     border:1px solid var(--border);
     border-radius:25px;
     overflow:hidden;
-    box-shadow:0 8px 25px rgba(70,40,30,.05);
-    transition:.3s;
     cursor:pointer;
+    transition:.3s;
 }
 
 .product:hover{
-    transform:translateY(-7px);
+    transform:translateY(-8px);
     box-shadow:var(--shadow);
 }
 
 .product-image{
     height:230px;
-    background:linear-gradient(135deg,#f9e5e4,#ead0d3);
     display:flex;
     justify-content:center;
     align-items:center;
     font-size:90px;
+    background:linear-gradient(135deg,#f9e5e4,#ead0d3);
+    overflow:hidden;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .product-info{
@@ -226,78 +377,13 @@ header{
 }
 
 .price{
-    font-weight:900;
-    font-size:21px;
-    color:var(--accent2);
     margin-top:13px;
+    color:var(--darkpink);
+    font-size:21px;
+    font-weight:900;
 }
 
-.btn{
-    border:0;
-    border-radius:13px;
-    padding:12px 18px;
-    transition:.2s;
-}
-
-.btn:hover{
-    transform:translateY(-2px);
-}
-
-.full{
-    width:100%;
-}
-
-.secondary{
-    background:#f4e9e5;
-    color:#68484a;
-}
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(20,10,8,.55);
-    backdrop-filter:blur(7px);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:5000;
-}
-
-.modal.show{
-    display:flex;
-}
-
-.modal-box{
-    width:min(700px,100%);
-    max-height:90vh;
-    overflow:auto;
-    background:white;
-    border-radius:28px;
-    padding:28px;
-    animation:pop .25s ease;
-}
-
-@keyframes pop{
-    from{opacity:0;transform:scale(.94) translateY(20px)}
-    to{opacity:1;transform:scale(1) translateY(0)}
-}
-
-.modal-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.close{
-    border:0;
-    background:#f5eeee;
-    width:38px;
-    height:38px;
-    border-radius:50%;
-    font-size:20px;
-}
+/* FORMS */
 
 .form-group{
     margin-bottom:16px;
@@ -314,9 +400,9 @@ header{
 .form-group textarea,
 .form-group select{
     width:100%;
-    padding:13px 14px;
     border:1px solid var(--border);
     border-radius:12px;
+    padding:13px 14px;
     outline:none;
     background:#fffdfc;
 }
@@ -324,20 +410,69 @@ header{
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus{
-    border-color:var(--accent);
+    border-color:var(--pink);
     box-shadow:0 0 0 3px rgba(184,111,115,.1);
 }
 
 .error{
-    color:#c0392b;
+    color:var(--red);
     font-size:13px;
     margin-top:5px;
 }
 
-.success{
-    color:#27834c;
-    font-size:13px;
-    margin-top:5px;
+/* MODALS */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(20,10,8,.58);
+    backdrop-filter:blur(7px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:5000;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:min(700px,100%);
+    max-height:92vh;
+    overflow:auto;
+    background:white;
+    border-radius:28px;
+    padding:28px;
+    animation:pop .25s ease;
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.94) translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:var(--soft);
+    font-size:21px;
 }
 
 .progress{
@@ -347,33 +482,39 @@ header{
 }
 
 .progress span{
-    height:5px;
     flex:1;
+    height:5px;
     border-radius:10px;
     background:#eee;
 }
 
 .progress span.active{
-    background:var(--accent);
+    background:var(--pink);
 }
+
+/* SUMMARY */
 
 .summary{
     background:#fff8f6;
     border:1px solid var(--border);
-    padding:18px;
     border-radius:16px;
+    padding:17px;
     margin-bottom:20px;
+    line-height:1.7;
 }
 
-.order-card{
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:15px;
-    margin-bottom:12px;
-}
+/* ADMIN */
 
-.admin{
+#adminPanel{
     display:none;
+}
+
+.admin-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:12px;
 }
 
 .admin-grid{
@@ -382,13 +523,80 @@ header{
     gap:15px;
 }
 
+.admin-product-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.admin-thumb{
+    width:60px;
+    height:60px;
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    flex-shrink:0;
+}
+
+.admin-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* SUCCESS */
+
+.success-box{
+    text-align:center;
+    padding:20px 5px;
+}
+
+.success-circle{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#e5f6eb;
+    color:var(--green);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    margin:0 auto 18px;
+}
+
+.order-number{
+    background:#fff8f6;
+    border:2px dashed var(--pink);
+    border-radius:15px;
+    padding:15px;
+    margin:20px 0;
+    font-size:22px;
+    font-weight:900;
+    color:var(--darkpink);
+}
+
+/* FOOTER */
+
 footer{
     margin-top:50px;
     background:#292321;
     color:white;
-    padding:45px 20px;
     text-align:center;
+    padding:45px 20px;
 }
+
+footer p{
+    color:#ccc;
+    margin-top:10px;
+}
+
+/* TOAST */
 
 .toast{
     position:fixed;
@@ -399,17 +607,21 @@ footer{
     padding:15px 20px;
     border-radius:14px;
     z-index:10000;
-    transform:translateY(100px);
     opacity:0;
+    transform:translateY(100px);
     transition:.3s;
+    max-width:350px;
 }
 
 .toast.show{
-    transform:translateY(0);
     opacity:1;
+    transform:translateY(0);
 }
 
+/* MOBILE */
+
 @media(max-width:800px){
+
     .hero{
         grid-template-columns:1fr;
     }
@@ -417,15 +629,13 @@ footer{
     .products{
         grid-template-columns:repeat(2,1fr);
     }
+
 }
 
 @media(max-width:550px){
+
     .products{
         grid-template-columns:1fr;
-    }
-
-    .hero{
-        padding-top:45px;
     }
 
     .admin-grid{
@@ -437,96 +647,301 @@ footer{
     }
 
     .logo{
-        font-size:19px;
+        font-size:18px;
     }
+
+    .nav-buttons .icon-btn{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .login-card{
+        padding:25px 20px;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<!-- LOADING -->
+
+<div id="loadingScreen">
+
+    <div class="loader"></div>
+
+    <p style="margin-top:15px;color:#806f68;">
+        Loading MINAB CROCHET...
+    </p>
+
+</div>
+
+
+<!-- FIRST LOGIN -->
+
+<div id="startScreen">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+
+            <div class="login-icon">🧶</div>
+
+            <h1>MINAB CROCHET</h1>
+
+            <p>HANDMADE WITH LOVE</p>
+
+        </div>
+
+        <h2 style="text-align:center;margin-bottom:7px;">
+            Welcome
+        </h2>
+
+        <p style="text-align:center;color:#806f68;margin-bottom:25px;">
+            Login or create your account to continue.
+        </p>
+
+        <div class="form-group">
+
+            <label>Username</label>
+
+            <input
+                id="startUsername"
+                type="text"
+                placeholder="Enter username"
+                autocomplete="username"
+            >
+
+            <div id="startUsernameError" class="error"></div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Password</label>
+
+            <input
+                id="startPassword"
+                type="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+            >
+
+            <div id="startPasswordError" class="error"></div>
+
+        </div>
+
+        <button
+            class="btn primary"
+            style="width:100%;"
+            onclick="startLogin()"
+        >
+            Continue →
+        </button>
+
+        <p style="text-align:center;color:#806f68;font-size:12px;margin-top:17px;">
+            New username? An account will be created automatically.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- HEADER -->
+
+<header id="mainHeader">
+
     <div class="nav">
+
         <div class="logo">
+
             MINAB CROCHET
+
             <small>HANDMADE WITH LOVE</small>
+
         </div>
 
         <div class="nav-buttons">
-            <button class="icon-btn" onclick="openLogin()">👤 Login</button>
-            <button class="icon-btn" onclick="openAdminLogin()">⚙️ Admin</button>
+
+            <button
+                class="icon-btn"
+                onclick="showCurrentUser()"
+            >
+                👤 <span id="navUser">Account</span>
+            </button>
+
+            <button
+                class="icon-btn"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
         </div>
+
     </div>
+
 </header>
 
-<main>
+
+<!-- MAIN WEBSITE -->
+
+<main id="mainWebsite">
 
 <section class="hero">
+
     <div>
-        <p style="font-weight:bold;color:#b86f73;">HANDMADE • UNIQUE • BEAUTIFUL</p>
-        <h1>Made by hand.<br><span>Made for you.</span></h1>
+
+        <div class="hero-label">
+            HANDMADE • UNIQUE • BEAUTIFUL
+        </div>
+
+        <h1>
+            Made by hand.<br>
+            <span>Made for you.</span>
+        </h1>
+
         <p>
-            Welcome to MINAB CROCHET — beautiful handmade crochet creations
-            designed with care, creativity and love.
+            Welcome to MINAB CROCHET — beautiful handmade
+            crochet creations designed with care, creativity
+            and love.
         </p>
+
         <br>
-        <button class="btn primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">
+
+        <button
+            class="btn primary"
+            onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})"
+        >
             Shop Collection →
         </button>
+
     </div>
 
     <div class="hero-card">
-        <div class="yarn">🧶</div>
+
+        <div class="yarn">
+            🧶
+        </div>
+
     </div>
+
 </section>
+
 
 <section class="section" id="shop">
 
     <div class="section-title">
+
         <h2>Our Collection</h2>
-        <p>Click any product to see details and place an order.</p>
+
+        <p>
+            Select a product to order and customize it.
+        </p>
+
     </div>
 
     <div class="filters">
-        <button class="filter active" onclick="filterProducts('all',this)">All</button>
-        <button class="filter" onclick="filterProducts('bags',this)">Bags</button>
-        <button class="filter" onclick="filterProducts('flowers',this)">Flowers</button>
-        <button class="filter" onclick="filterProducts('keychains',this)">Keychains</button>
-        <button class="filter" onclick="filterProducts('custom',this)">Custom</button>
+
+        <button
+            class="filter active"
+            onclick="filterProducts('all',this)"
+        >
+            All
+        </button>
+
+        <button
+            class="filter"
+            onclick="filterProducts('bags',this)"
+        >
+            Bags
+        </button>
+
+        <button
+            class="filter"
+            onclick="filterProducts('flowers',this)"
+        >
+            Flowers
+        </button>
+
+        <button
+            class="filter"
+            onclick="filterProducts('keychains',this)"
+        >
+            Keychains
+        </button>
+
+        <button
+            class="filter"
+            onclick="filterProducts('custom',this)"
+        >
+            Custom
+        </button>
+
     </div>
 
     <div class="products" id="products"></div>
 
 </section>
 
-<section class="section admin" id="adminPanel">
+
+<!-- ADMIN -->
+
+<section class="section" id="adminPanel">
 
     <div class="section-title">
+
         <h2>Admin Dashboard</h2>
-        <p>MINAB CROCHET management panel</p>
+
+        <p>
+            MINAB CROCHET management
+        </p>
+
     </div>
 
     <div class="summary">
-        <strong>Admin Account:</strong> MinabAdmin
-        <button class="btn secondary" style="float:right" onclick="logoutAdmin()">Logout</button>
+
+        <strong>Logged in as:</strong>
+        MinabAdmin
+
+        <button
+            class="btn secondary"
+            style="float:right;"
+            onclick="logoutAdmin()"
+        >
+            Logout Admin
+        </button>
+
     </div>
 
-    <h3>Products</h3>
-    <br>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin:30px 0 15px;flex-wrap:wrap;gap:10px;">
+
+        <h2 style="margin:0;">
+            Product Management
+        </h2>
+
+        <button
+            class="btn primary"
+            onclick="openProductEditor(null)"
+        >
+            + Add New Product
+        </button>
+
+    </div>
 
     <div id="adminProducts"></div>
 
-    <br><br>
-
-    <h3>Saved Orders</h3>
-    <br>
+    <h2 style="margin:40px 0 15px;">
+        Orders
+    </h2>
 
     <div id="adminOrders"></div>
 
-    <br><br>
-
-    <h3>Registered Users</h3>
-    <br>
+    <h2 style="margin:40px 0 15px;">
+        Registered Users
+    </h2>
 
     <div id="adminUsers"></div>
 
@@ -534,854 +949,341 @@ footer{
 
 </main>
 
+
 <footer>
+
     <h2>MINAB CROCHET</h2>
-    <p style="margin-top:10px;color:#ddd;">Handmade with love 🤍</p>
-    <p style="margin-top:20px;font-size:13px;color:#aaa;">
-        © 2026 MINAB CROCHET. All rights reserved.
+
+    <p>Handmade with love 🤍</p>
+
+    <p style="font-size:12px;color:#999;margin-top:20px;">
+        © 2026 MINAB CROCHET
     </p>
+
 </footer>
 
 
 <!-- PRODUCT MODAL -->
 
 <div class="modal" id="productModal">
+
     <div class="modal-box">
 
         <div class="modal-head">
-            <h2 id="modalProductName">Product</h2>
-            <button class="close" onclick="closeModal('productModal')">×</button>
+
+            <h2 id="modalProductName">
+                Product
+            </h2>
+
+            <button
+                class="close"
+                onclick="closeModal('productModal')"
+            >
+                ×
+            </button>
+
         </div>
 
         <div id="productDetails"></div>
 
-        <button class="btn primary full" onclick="startOrder()">
+        <button
+            class="btn primary"
+            style="width:100%;"
+            onclick="startOrder()"
+        >
             Buy / Customize →
         </button>
 
     </div>
+
 </div>
 
 
 <!-- ORDER MODAL -->
 
 <div class="modal" id="orderModal">
+
     <div class="modal-box">
 
         <div class="modal-head">
-            <h2>Complete Your Order</h2>
-            <button class="close" onclick="closeModal('orderModal')">×</button>
+
+            <h2>Place Your Order</h2>
+
+            <button
+                class="close"
+                onclick="closeModal('orderModal')"
+            >
+                ×
+            </button>
+
         </div>
 
         <div class="progress">
-            <span id="p1" class="active"></span>
-            <span id="p2"></span>
+
+            <span id="progress1" class="active"></span>
+            <span id="progress2"></span>
+            <span id="progress3"></span>
+
         </div>
+
+
+        <!-- CUSTOMER STEP -->
 
         <div id="customerStep">
 
             <h3>Customer Information</h3>
+
             <p style="color:#806f68;margin:7px 0 20px;">
-                Please enter your information correctly.
+                Enter your information correctly.
             </p>
 
             <div class="form-group">
+
                 <label>Full Name *</label>
-                <input id="fullName" type="text" placeholder="Your full name">
+
+                <input
+                    id="fullName"
+                    type="text"
+                    placeholder="Your full name"
+                >
+
                 <div id="fullNameError" class="error"></div>
+
             </div>
 
             <div class="form-group">
+
                 <label>Address *</label>
-                <textarea id="address" rows="3" placeholder="Complete address"></textarea>
+
+                <textarea
+                    id="address"
+                    rows="3"
+                    placeholder="Complete delivery address"
+                ></textarea>
+
                 <div id="addressError" class="error"></div>
+
             </div>
 
             <div class="admin-grid">
 
                 <div class="form-group">
+
                     <label>Area *</label>
-                    <input id="area" type="text" placeholder="Your area">
+
+                    <input
+                        id="area"
+                        type="text"
+                        placeholder="Area"
+                    >
+
                     <div id="areaError" class="error"></div>
+
                 </div>
 
                 <div class="form-group">
+
                     <label>City *</label>
-                    <input id="city" type="text" placeholder="City">
+
+                    <input
+                        id="city"
+                        type="text"
+                        placeholder="City"
+                    >
+
                     <div id="cityError" class="error"></div>
+
                 </div>
 
             </div>
 
             <div class="form-group">
+
                 <label>Phone Number *</label>
-                <input id="phone" type="tel" placeholder="03XXXXXXXXX">
+
+                <input
+                    id="phone"
+                    type="tel"
+                    placeholder="03XXXXXXXXX"
+                >
+
                 <div id="phoneError" class="error"></div>
+
             </div>
 
             <div class="form-group">
+
                 <label>Gmail *</label>
-                <input id="gmail" type="email" placeholder="example@gmail.com">
+
+                <input
+                    id="gmail"
+                    type="email"
+                    placeholder="example@gmail.com"
+                >
+
                 <div id="gmailError" class="error"></div>
+
             </div>
 
-            <button class="btn primary full" onclick="continueToCustomization()">
+            <button
+                class="btn primary"
+                style="width:100%;"
+                onclick="continueToCustomization()"
+            >
                 Continue →
             </button>
 
         </div>
 
 
-        <div id="customizationStep" style="display:none">
+        <!-- CUSTOMIZATION STEP -->
 
-            <h3>Customize Your Product</h3>
+        <div id="customizationStep" style="display:none;">
+
+            <h3>
+                Customize Your Product
+            </h3>
 
             <div class="summary">
+
                 <strong id="selectedProductText"></strong>
+
                 <br>
-                Price: <span id="selectedPrice"></span>
+
+                Price:
+                <strong id="selectedPrice"></strong>
+
             </div>
 
-            <div class="form-group">
-                <label>Color *</label>
-                <select id="color">
-                    <option value="">Select color</option>
-                    <option>Black</option>
-                    <option>White</option>
-                    <option>Cream</option>
-                    <option>Pink</option>
-                    <option>Brown</option>
-                    <option>Red</option>
-                    <option>Blue</option>
-                    <option>Custom Color</option>
-                </select>
-            </div>
+            <div id="dynamicOptionsContainer"></div>
 
-            <div class="form-group">
-                <label>Size *</label>
-                <select id="size">
-                    <option value="">Select size</option>
-                    <option>Small</option>
-                    <option>Medium</option>
-                    <option>Large</option>
-                    <option>Custom Size</option>
-                </select>
-            </div>
+            <div
+                id="customError"
+                class="error"
+                style="margin-bottom:12px;"
+            ></div>
 
-            <div class="form-group">
-                <label>Design / Custom Request</label>
-                <textarea id="design" rows="4"
-                placeholder="Tell us your preferred design, pattern, initials, etc."></textarea>
-            </div>
-
-            <div class="error" id="customError"></div>
-
-            <button class="btn primary full" onclick="placeOrder()">
+            <button
+                class="btn primary"
+                style="width:100%;"
+                onclick="placeOrder()"
+            >
                 Confirm Order ✓
             </button>
 
         </div>
 
-    </div>
-</div>
 
+        <!-- SUCCESS -->
 
-<!-- LOGIN MODAL -->
+        <div id="successStep" style="display:none;">
 
-<div class="modal" id="loginModal">
-    <div class="modal-box">
+            <div class="success-box">
 
-        <div class="modal-head">
-            <h2>MINAB Account</h2>
-            <button class="close" onclick="closeModal('loginModal')">×</button>
-        </div>
+                <div class="success-circle">
+                    ✓
+                </div>
 
-        <div class="form-group">
-            <label>Username</label>
-            <input id="username" placeholder="Enter username">
-            <div id="usernameError" class="error"></div>
-        </div>
+                <h2>
+                    Order Generated Successfully!
+                </h2>
 
-        <div class="form-group">
-            <label>Password</label>
-            <input id="userPassword" type="password" placeholder="Create / enter password">
-        </div>
-
-        <button class="btn primary full" onclick="loginOrRegister()">
-            Continue
-        </button>
-
-        <p style="margin-top:15px;font-size:13px;color:#806f68;">
-            New usernames are automatically registered.
-        </p>
-
-    </div>
-</div>
-
-
-<!-- ADMIN LOGIN -->
-
-<div class="modal" id="adminLoginModal">
-    <div class="modal-box">
-
-        <div class="modal-head">
-            <h2>Admin Login</h2>
-            <button class="close" onclick="closeModal('adminLoginModal')">×</button>
-        </div>
-
-        <div class="form-group">
-            <label>Admin Username</label>
-            <input id="adminUsername" placeholder="Username">
-        </div>
-
-        <div class="form-group">
-            <label>Admin Password</label>
-            <input id="adminPassword" type="password" placeholder="Password">
-        </div>
-
-        <div id="adminError" class="error"></div>
-
-        <button class="btn primary full" onclick="adminLogin()">
-            Continue
-        </button>
-
-    </div>
-</div>
-
-
-<div class="toast" id="toast"></div>
-
-
-<script>
-
-/* =========================================================
-   MINAB CROCHET DATABASE
-   Browser localStorage version
-   ========================================================= */
-
-const ADMIN_USERNAME = "MinabAdmin";
-const ADMIN_PASSWORD = "okaybutidc7";
-
-let products = JSON.parse(localStorage.getItem("minab_products")) || [
-
-    {
-        id:1,
-        name:"Crochet Flower Bouquet",
-        category:"flowers",
-        price:1800,
-        emoji:"💐",
-        description:"Beautiful handmade crochet flowers."
-    },
-
-    {
-        id:2,
-        name:"Crochet Mini Bag",
-        category:"bags",
-        price:2200,
-        emoji:"👜",
-        description:"Cute handmade crochet mini bag."
-    },
-
-    {
-        id:3,
-        name:"Crochet Keychain",
-        category:"keychains",
-        price:500,
-        emoji:"🔑",
-        description:"Small handmade crochet keychain."
-    },
-
-    {
-        id:4,
-        name:"Custom Crochet Gift",
-        category:"custom",
-        price:2500,
-        emoji:"🎁",
-        description:"Customized handmade crochet gift."
-    },
-
-    {
-        id:5,
-        name:"Crochet Teddy",
-        category:"custom",
-        price:1800,
-        emoji:"🧸",
-        description:"Soft handmade crochet teddy."
-    },
-
-    {
-        id:6,
-        name:"Crochet Heart",
-        category:"flowers",
-        price:700,
-        emoji:"❤️",
-        description:"Cute handmade crochet heart."
-    }
-
-];
-
-let users = JSON.parse(localStorage.getItem("minab_users")) || [];
-let orders = JSON.parse(localStorage.getItem("minab_orders")) || [];
-
-let selectedProduct = null;
-let currentFilter = "all";
-
-
-/* =========================================================
-   DATABASE SAVE
-   ========================================================= */
-
-function saveDatabase(){
-
-    localStorage.setItem(
-        "minab_products",
-        JSON.stringify(products)
-    );
-
-    localStorage.setItem(
-        "minab_users",
-        JSON.stringify(users)
-    );
-
-    localStorage.setItem(
-        "minab_orders",
-        JSON.stringify(orders)
-    );
-}
-
-
-/* =========================================================
-   PRODUCTS
-   ========================================================= */
-
-function renderProducts(){
-
-    const container = document.getElementById("products");
-
-    let list = products;
-
-    if(currentFilter !== "all"){
-        list = products.filter(
-            p => p.category === currentFilter
-        );
-    }
-
-    container.innerHTML = list.map(product => `
-
-        <div class="product"
-             onclick="openProduct(${product.id})">
-
-            <div class="product-image">
-                ${product.emoji}
-            </div>
-
-            <div class="product-info">
-
-                <h3>${escapeHTML(product.name)}</h3>
-
-                <p>
-                    ${escapeHTML(product.description)}
+                <p style="color:#806f68;margin-top:8px;">
+                    Your order has been saved successfully.
                 </p>
 
-                <div class="price">
-                    Rs. ${Number(product.price).toLocaleString()}
+                <div class="order-number">
+
+                    Order Number
+
+                    <br>
+
+                    <span id="generatedOrderNumber">
+                        -
+                    </span>
+
                 </div>
+
+                <p
+                    id="whatsappStatus"
+                    style="color:#806f68;font-size:14px;line-height:1.6;"
+                >
+                    Opening WhatsApp...
+                </p>
+
+                <br>
+
+                <button
+                    class="btn primary"
+                    style="width:100%;"
+                    onclick="openWhatsAppAgain()"
+                >
+                    Open WhatsApp Again
+                </button>
+
+                <br><br>
+
+                <button
+                    class="btn secondary"
+                    style="width:100%;"
+                    onclick="closeModal('orderModal')"
+                >
+                    Continue Shopping
+                </button>
 
             </div>
 
         </div>
 
-    `).join("");
+    </div>
 
-}
-
-
-function filterProducts(category,button){
-
-    currentFilter = category;
-
-    document
-        .querySelectorAll(".filter")
-        .forEach(x => x.classList.remove("active"));
-
-    button.classList.add("active");
-
-    renderProducts();
-}
+</div>
 
 
-/* =========================================================
-   PRODUCT PAGE / DETAILS
-   ========================================================= */
+<!-- PRODUCT EDIT MODAL (ADMIN) -->
 
-function openProduct(id){
+<div class="modal" id="productEditModal">
 
-    selectedProduct = products.find(p => p.id === id);
+    <div class="modal-box">
 
-    if(!selectedProduct) return;
+        <div class="modal-head">
 
-    document.getElementById("modalProductName").textContent =
-        selectedProduct.name;
+            <h2 id="editModalTitle">Edit Product</h2>
 
-    document.getElementById("productDetails").innerHTML = `
+            <button
+                class="close"
+                onclick="closeModal('productEditModal')"
+            >
+                ×
+            </button>
 
-        <div class="product-image"
-             style="height:260px;border-radius:20px;margin-bottom:20px;">
-            ${selectedProduct.emoji}
         </div>
 
-        <h3>${escapeHTML(selectedProduct.name)}</h3>
+        <div class="form-group">
 
-        <p style="color:#806f68;margin-top:10px;line-height:1.7;">
-            ${escapeHTML(selectedProduct.description)}
-        </p>
+            <label>Product Image</label>
 
-        <div class="price">
-            Rs. ${Number(selectedProduct.price).toLocaleString()}
-        </div>
+            <div style="display:flex;gap:15px;align-items:center;">
 
-        <br>
-
-        <div class="summary">
-            Handmade product<br>
-            Custom colors available<br>
-            Custom sizes available<br>
-            Custom designs available
-        </div>
-    `;
-
-    openModal("productModal");
-}
-
-
-function startOrder(){
-
-    closeModal("productModal");
-
-    document.getElementById("customerStep").style.display = "block";
-    document.getElementById("customizationStep").style.display = "none";
-
-    document.getElementById("p1").classList.add("active");
-    document.getElementById("p2").classList.remove("active");
-
-    openModal("orderModal");
-}
-
-
-/* =========================================================
-   CUSTOMER VALIDATION
-   ========================================================= */
-
-function continueToCustomization(){
-
-    clearErrors();
-
-    const fullName =
-        document.getElementById("fullName").value.trim();
-
-    const address =
-        document.getElementById("address").value.trim();
-
-    const area =
-        document.getElementById("area").value.trim();
-
-    const city =
-        document.getElementById("city").value.trim();
-
-    const phone =
-        document.getElementById("phone").value.trim();
-
-    const gmail =
-        document.getElementById("gmail").value.trim();
-
-    let valid = true;
-
-    if(fullName.length < 3){
-        showError("fullNameError","Enter your full name.");
-        valid = false;
-    }
-
-    if(address.length < 5){
-        showError("addressError","Enter your complete address.");
-        valid = false;
-    }
-
-    if(area.length < 2){
-        showError("areaError","Enter your area.");
-        valid = false;
-    }
-
-    if(city.length < 2){
-        showError("cityError","Enter your city.");
-        valid = false;
-    }
-
-    if(!/^[0-9+\-\s]{10,15}$/.test(phone)){
-        showError("phoneError","Enter a valid phone number.");
-        valid = false;
-    }
-
-    if(!/^[^\s@]+@gmail\.com$/i.test(gmail)){
-        showError(
-            "gmailError",
-            "Please enter a valid Gmail address."
-        );
-        valid = false;
-    }
-
-    if(!valid) return;
-
-    document.getElementById("customerStep").style.display = "none";
-    document.getElementById("customizationStep").style.display = "block";
-
-    document.getElementById("p1").classList.remove("active");
-    document.getElementById("p2").classList.add("active");
-
-    document.getElementById("selectedProductText").textContent =
-        selectedProduct.name;
-
-    document.getElementById("selectedPrice").textContent =
-        "Rs. " + Number(selectedProduct.price).toLocaleString();
-
-}
-
-
-function clearErrors(){
-
-    document
-        .querySelectorAll(".error")
-        .forEach(e => e.textContent = "");
-
-}
-
-
-function showError(id,message){
-
-    document.getElementById(id).textContent = message;
-
-}
-
-
-/* =========================================================
-   ORDER
-   ========================================================= */
-
-function placeOrder(){
-
-    const color =
-        document.getElementById("color").value;
-
-    const size =
-        document.getElementById("size").value;
-
-    const design =
-        document.getElementById("design").value.trim();
-
-    const customError =
-        document.getElementById("customError");
-
-    customError.textContent = "";
-
-    if(!color){
-
-        customError.textContent =
-            "Please select a color.";
-
-        return;
-    }
-
-    if(!size){
-
-        customError.textContent =
-            "Please select a size.";
-
-        return;
-    }
-
-    const order = {
-
-        id:
-            "ORD-" +
-            Date.now(),
-
-        date:
-            new Date().toLocaleString(),
-
-        product:{
-            id:selectedProduct.id,
-            name:selectedProduct.name,
-            price:selectedProduct.price
-        },
-
-        customer:{
-            fullName:
-                document.getElementById("fullName").value.trim(),
-
-            address:
-                document.getElementById("address").value.trim(),
-
-            area:
-                document.getElementById("area").value.trim(),
-
-            city:
-                document.getElementById("city").value.trim(),
-
-            phone:
-                document.getElementById("phone").value.trim(),
-
-            gmail:
-                document.getElementById("gmail").value.trim()
-        },
-
-        customization:{
-            color:color,
-            size:size,
-            design:design
-        },
-
-        status:"New"
-
-    };
-
-    orders.push(order);
-
-    saveDatabase();
-
-    closeModal("orderModal");
-
-    showToast(
-        "Order saved successfully! Order ID: " +
-        order.id
-    );
-
-    resetOrderForm();
-
-}
-
-
-function resetOrderForm(){
-
-    document
-        .querySelectorAll("#orderModal input,#orderModal textarea")
-        .forEach(x => x.value = "");
-
-    document
-        .querySelectorAll("#orderModal select")
-        .forEach(x => x.selectedIndex = 0);
-
-}
-
-
-/* =========================================================
-   USER LOGIN / REGISTER
-   ========================================================= */
-
-function openLogin(){
-
-    openModal("loginModal");
-
-}
-
-
-function loginOrRegister(){
-
-    const username =
-        document.getElementById("username").value.trim();
-
-    const password =
-        document.getElementById("userPassword").value;
-
-    const error =
-        document.getElementById("usernameError");
-
-    error.textContent = "";
-
-    if(username.length < 3){
-
-        error.textContent =
-            "Username must contain at least 3 characters.";
-
-        return;
-    }
-
-    if(username.toLowerCase() === ADMIN_USERNAME.toLowerCase()){
-
-        error.textContent =
-            "This username is reserved for administration.";
-
-        return;
-    }
-
-    if(password.length < 4){
-
-        error.textContent =
-            "Password must contain at least 4 characters.";
-
-        return;
-    }
-
-    const existing =
-        users.find(
-            u => u.username.toLowerCase() === username.toLowerCase()
-        );
-
-    if(existing){
-
-        if(existing.password !== password){
-
-            error.textContent =
-                "Username exists, but the password is incorrect.";
-
-            return;
-        }
-
-        localStorage.setItem(
-            "minab_current_user",
-            username
-        );
-
-        closeModal("loginModal");
-
-        showToast("Welcome back, " + username + "!");
-        return;
-    }
-
-    users.push({
-
-        id:Date.now(),
-
-        username:username,
-
-        password:password,
-
-        createdAt:
-            new Date().toLocaleString()
-
-    });
-
-    saveDatabase();
-
-    localStorage.setItem(
-        "minab_current_user",
-        username
-    );
-
-    closeModal("loginModal");
-
-    showToast(
-        "Account created successfully!"
-    );
-
-}
-
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-
-function openAdminLogin(){
-
-    openModal("adminLoginModal");
-
-}
-
-
-function adminLogin(){
-
-    const username =
-        document.getElementById("adminUsername").value.trim();
-
-    const password =
-        document.getElementById("adminPassword").value;
-
-    const error =
-        document.getElementById("adminError");
-
-    error.textContent = "";
-
-    if(
-        username === ADMIN_USERNAME &&
-        password === ADMIN_PASSWORD
-    ){
-
-        localStorage.setItem(
-            "minab_admin_logged",
-            "true"
-        );
-
-        closeModal("adminLoginModal");
-
-        document.getElementById("adminPanel").style.display =
-            "block";
-
-        document
-            .getElementById("adminPanel")
-            .scrollIntoView({
-                behavior:"smooth"
-            });
-
-        renderAdmin();
-
-        showToast("Admin login successful.");
-
-    }else{
-
-        error.textContent =
-            "Incorrect admin username or password.";
-
-    }
-
-}
-
-
-function logoutAdmin(){
-
-    localStorage.removeItem("minab_admin_logged");
-
-    document.getElementById("adminPanel").style.display =
-        "none";
-
-    showToast("Admin logged out.");
-
-}
-
-
-/* =========================================================
-   ADMIN PRODUCT MANAGEMENT
-   ========================================================= */
-
-function renderAdmin(){
-
-    const container =
-        document.getElementById("adminProducts");
-
-    container.innerHTML = products.map(product => `
-
-        <div class="order-card">
-
-            <div style="display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap">
+                <div id="editImagePreview" class="admin-thumb" style="width:80px;height:80px;font-size:36px;"></div>
 
                 <div>
-                    <strong>${escapeHTML(product.name)}</strong>
-                    <br>
-                    <small>${escapeHTML(product.category)}</small>
-                </div>
-
-                <div style="display:flex;gap:8px;align-items:center">
-
-                    <span>Rs.</span>
 
                     <input
-                        type="number"
-                        id="price-${product.id}"
-                        value="${product.price}"
-                        style="width:120px;padding:9px;border:1px solid #eadbd5;border-radius:9px"
+                        type="file"
+                        accept="image/*"
+                        id="editImageInput"
+                        onchange="handleImageUpload(this)"
                     >
 
+                    <br>
+
                     <button
-                        class="btn primary"
-                        onclick="updatePrice(${product.id})">
-                        Save
+                        class="btn secondary"
+                        style="margin-top:8px;"
+                        onclick="removeEditorImage()"
+                    >
+                        Remove Image
                     </button>
 
                 </div>
@@ -1390,133 +1292,514 @@ function renderAdmin(){
 
         </div>
 
-    `).join("");
+        <div class="form-group">
+
+            <label>Fallback Emoji Icon</label>
+
+            <input
+                type="text"
+                id="editEmoji"
+                placeholder="🧶"
+                maxlength="4"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Product Name *</label>
+
+            <input type="text" id="editName">
+
+        </div>
+
+        <div class="admin-grid">
+
+            <div class="form-group">
+
+                <label>Category *</label>
+
+                <select id="editCategory">
+
+                    <option value="bags">Bags</option>
+                    <option value="flowers">Flowers</option>
+                    <option value="keychains">Keychains</option>
+                    <option value="custom">Custom</option>
+
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Price (Rs.) *</label>
+
+                <input type="number" id="editPrice" min="0">
+
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Description</label>
+
+            <textarea id="editDescription" rows="3"></textarea>
+
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--border);margin:20px 0;">
+
+        <h3 style="margin-bottom:5px;">
+            Customization Options
+        </h3>
+
+        <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
+            These are the questions a customer answers when ordering this
+            product — colors, sizes, quantity, flowers wanted, design
+            requests, or anything else you need from them.
+        </p>
+
+        <div id="optionsEditorList"></div>
+
+        <button
+            class="btn secondary"
+            style="width:100%;margin-top:5px;"
+            onclick="addOptionRow()"
+        >
+            + Add Option
+        </button>
+
+        <div id="editError" class="error" style="margin-top:12px;"></div>
+
+        <button
+            class="btn primary"
+            style="width:100%;margin-top:20px;"
+            onclick="saveProductEditor()"
+        >
+            Save Product ✓
+        </button>
+
+        <button
+            class="btn secondary"
+            style="width:100%;margin-top:10px;color:var(--red);"
+            onclick="deleteFromEditor()"
+        >
+            Delete Product
+        </button>
+
+    </div>
+
+</div>
 
 
-    const orderContainer =
-        document.getElementById("adminOrders");
+<!-- TOAST -->
 
-    if(orders.length === 0){
-
-        orderContainer.innerHTML =
-            "<p>No orders yet.</p>";
-
-    }else{
-
-        orderContainer.innerHTML =
-            orders.slice().reverse().map(order => `
-
-                <div class="order-card">
-
-                    <strong>${escapeHTML(order.id)}</strong>
-
-                    <p>
-                        ${escapeHTML(order.product.name)}
-                        — Rs. ${Number(order.product.price).toLocaleString()}
-                    </p>
-
-                    <p>
-                        Customer:
-                        ${escapeHTML(order.customer.fullName)}
-                    </p>
-
-                    <p>
-                        Phone:
-                        ${escapeHTML(order.customer.phone)}
-                    </p>
-
-                    <p>
-                        ${escapeHTML(order.customer.area)},
-                        ${escapeHTML(order.customer.city)}
-                    </p>
-
-                    <p>
-                        Color:
-                        ${escapeHTML(order.customization.color)}
-                        |
-                        Size:
-                        ${escapeHTML(order.customization.size)}
-                    </p>
-
-                    <p>
-                        Design:
-                        ${escapeHTML(order.customization.design || "None")}
-                    </p>
-
-                    <small>${escapeHTML(order.date)}</small>
-
-                </div>
-
-            `).join("");
-
-    }
+<div class="toast" id="toast"></div>
 
 
-    const usersContainer =
-        document.getElementById("adminUsers");
+<script>
 
-    if(users.length === 0){
+/* ============================================================
+   SETTINGS
+   ============================================================ */
 
-        usersContainer.innerHTML =
-            "<p>No registered users yet.</p>";
+const WHATSAPP_NUMBER = "923226322332";
 
-    }else{
+const ADMIN_USERNAME = "MinabAdmin";
 
-        usersContainer.innerHTML =
-            users.map(user => `
+const ADMIN_PASSWORD = "okaybutidc7";
 
-                <div class="order-card">
 
-                    <strong>
-                        ${escapeHTML(user.username)}
-                    </strong>
+/* ============================================================
+   LOCAL DATABASE
+   ============================================================ */
 
-                    <br>
+let products =
+    JSON.parse(
+        localStorage.getItem("MINAB_PRODUCTS")
+    ) || [
 
-                    <small>
-                        Created:
-                        ${escapeHTML(user.createdAt)}
-                    </small>
+        {
+            id:1,
+            name:"Crochet Flower Bouquet",
+            category:"flowers",
+            price:1800,
+            emoji:"💐",
+            image:null,
+            description:
+                "Beautiful handmade crochet flowers.",
+            options:[
+                {id:"o1",label:"Flower Types",type:"text",required:true,placeholder:"e.g. Roses, Sunflowers, Tulips"},
+                {id:"o2",label:"Flower Colors",type:"text",required:true,placeholder:"e.g. Pink, White, Red"},
+                {id:"o3",label:"Quantity",type:"number",required:true,placeholder:"Number of flowers"},
+                {id:"o4",label:"Wrapping Style",type:"select",required:false,choices:["Paper Wrap","Basket","Vase","Box"]},
+                {id:"o5",label:"Special Request",type:"textarea",required:false,placeholder:"Any other details..."}
+            ]
+        },
 
-                </div>
+        {
+            id:2,
+            name:"Crochet Mini Bag",
+            category:"bags",
+            price:2200,
+            emoji:"👜",
+            image:null,
+            description:
+                "Cute handmade crochet mini bag.",
+            options:[
+                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
+                {id:"o2",label:"Size",type:"select",required:true,choices:["Small","Medium","Large","Custom Size"]},
+                {id:"o3",label:"Strap Style",type:"text",required:false,placeholder:"e.g. Short handle, long strap"},
+                {id:"o4",label:"Special Request",type:"textarea",required:false,placeholder:"Any other details..."}
+            ]
+        },
 
-            `).join("");
+        {
+            id:3,
+            name:"Crochet Keychain",
+            category:"keychains",
+            price:500,
+            emoji:"🔑",
+            image:null,
+            description:
+                "Small handmade crochet keychain.",
+            options:[
+                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
+                {id:"o2",label:"Design",type:"text",required:false,placeholder:"e.g. Flower, Animal, Initial"},
+                {id:"o3",label:"Special Request",type:"textarea",required:false,placeholder:""}
+            ]
+        },
 
-    }
+        {
+            id:4,
+            name:"Custom Crochet Gift",
+            category:"custom",
+            price:2500,
+            emoji:"🎁",
+            image:null,
+            description:
+                "Customized handmade crochet gift.",
+            options:[
+                {id:"o1",label:"Describe Your Idea",type:"textarea",required:true,placeholder:"Tell us what you'd like made..."},
+                {id:"o2",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
+                {id:"o3",label:"Size",type:"select",required:false,choices:["Small","Medium","Large","Custom Size"]}
+            ]
+        },
+
+        {
+            id:5,
+            name:"Crochet Teddy",
+            category:"custom",
+            price:1800,
+            emoji:"🧸",
+            image:null,
+            description:
+                "Soft handmade crochet teddy.",
+            options:[
+                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
+                {id:"o2",label:"Size",type:"select",required:true,choices:["Small","Medium","Large","Custom Size"]},
+                {id:"o3",label:"Name Embroidery",type:"text",required:false,placeholder:"Optional name on the teddy"}
+            ]
+        },
+
+        {
+            id:6,
+            name:"Crochet Heart",
+            category:"flowers",
+            price:700,
+            emoji:"❤️",
+            image:null,
+            description:
+                "Cute handmade crochet heart.",
+            options:[
+                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
+                {id:"o2",label:"Size",type:"select",required:false,choices:["Small","Medium","Large","Custom Size"]},
+                {id:"o3",label:"Special Request",type:"textarea",required:false,placeholder:""}
+            ]
+        }
+
+    ];
+
+
+let users =
+    JSON.parse(
+        localStorage.getItem("MINAB_USERS")
+    ) || [];
+
+
+let orders =
+    JSON.parse(
+        localStorage.getItem("MINAB_ORDERS")
+    ) || [];
+
+
+let selectedProduct = null;
+
+let currentOrder = null;
+
+let currentFilter = "all";
+
+let editingProduct = null;
+
+
+/* ============================================================
+   SAVE DATABASE
+   ============================================================ */
+
+function saveDatabase(){
+
+    localStorage.setItem(
+        "MINAB_PRODUCTS",
+        JSON.stringify(products)
+    );
+
+    localStorage.setItem(
+        "MINAB_USERS",
+        JSON.stringify(users)
+    );
+
+    localStorage.setItem(
+        "MINAB_ORDERS",
+        JSON.stringify(orders)
+    );
 
 }
 
 
-function updatePrice(id){
+/* ============================================================
+   LOADING
+   ============================================================ */
 
-    const input =
-        document.getElementById("price-" + id);
+window.addEventListener("load",function(){
 
-    const price =
-        Number(input.value);
+    setTimeout(function(){
 
-    if(!price || price < 0){
+        document.getElementById(
+            "loadingScreen"
+        ).style.display = "none";
 
-        showToast("Enter a valid price.");
+        checkExistingLogin();
+
+    },600);
+
+});
+
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+
+function checkExistingLogin(){
+
+    const loggedUser =
+        localStorage.getItem(
+            "MINAB_CURRENT_USER"
+        );
+
+    const admin =
+        localStorage.getItem(
+            "MINAB_ADMIN"
+        ) === "true";
+
+
+    if(admin){
+
+        document.getElementById(
+            "startScreen"
+        ).style.display = "none";
+
+        showAdmin();
 
         return;
+
     }
 
-    const product =
-        products.find(p => p.id === id);
 
-    if(product){
+    if(loggedUser){
 
-        product.price = price;
+        document.getElementById(
+            "startScreen"
+        ).style.display = "none";
 
-        saveDatabase();
+        updateUserUI(loggedUser);
 
         renderProducts();
 
-        renderAdmin();
+        return;
+
+    }
+
+
+    document.getElementById(
+        "startScreen"
+    ).style.display = "flex";
+
+}
+
+
+function startLogin(){
+
+    const username =
+        document.getElementById(
+            "startUsername"
+        ).value.trim();
+
+    const password =
+        document.getElementById(
+            "startPassword"
+        ).value;
+
+
+    document.getElementById(
+        "startUsernameError"
+    ).textContent = "";
+
+    document.getElementById(
+        "startPasswordError"
+    ).textContent = "";
+
+
+    if(username.length < 3){
+
+        document.getElementById(
+            "startUsernameError"
+        ).textContent =
+            "Username must contain at least 3 characters.";
+
+        return;
+
+    }
+
+
+    if(password.length < 4){
+
+        document.getElementById(
+            "startPasswordError"
+        ).textContent =
+            "Password must contain at least 4 characters.";
+
+        return;
+
+    }
+
+
+    /* ADMIN LOGIN */
+
+    if(
+        username === ADMIN_USERNAME &&
+        password === ADMIN_PASSWORD
+    ){
+
+        localStorage.setItem(
+            "MINAB_ADMIN",
+            "true"
+        );
+
+        localStorage.removeItem(
+            "MINAB_CURRENT_USER"
+        );
+
+        document.getElementById(
+            "startScreen"
+        ).style.display = "none";
+
+        showAdmin();
 
         showToast(
-            product.name + " price updated."
+            "Welcome, MinabAdmin!"
+        );
+
+        return;
+
+    }
+
+
+    /* NORMAL USER */
+
+    const existingUser =
+        users.find(
+            user =>
+                user.username.toLowerCase()
+                === username.toLowerCase()
+        );
+
+
+    if(existingUser){
+
+        if(existingUser.password !== password){
+
+            document.getElementById(
+                "startPasswordError"
+            ).textContent =
+                "Incorrect password.";
+
+            return;
+
+        }
+
+    }else{
+
+        users.push({
+
+            id:Date.now(),
+
+            username:username,
+
+            password:password,
+
+            createdAt:
+                new Date().toLocaleString()
+
+        });
+
+        saveDatabase();
+
+        showToast(
+            "New account created successfully!"
+        );
+
+    }
+
+
+    localStorage.setItem(
+        "MINAB_CURRENT_USER",
+        username
+    );
+
+
+    document.getElementById(
+        "startScreen"
+    ).style.display = "none";
+
+
+    updateUserUI(username);
+
+    renderProducts();
+
+}
+
+
+function updateUserUI(username){
+
+    document.getElementById(
+        "navUser"
+    ).textContent = username;
+
+}
+
+
+function showCurrentUser(){
+
+    const user =
+        localStorage.getItem(
+            "MINAB_CURRENT_USER"
+        );
+
+    if(user){
+
+        showToast(
+            "Logged in as " + user
         );
 
     }
@@ -1524,9 +1807,1650 @@ function updatePrice(id){
 }
 
 
-/* =========================================================
+function logoutUser(){
+
+    localStorage.removeItem(
+        "MINAB_CURRENT_USER"
+    );
+
+    location.reload();
+
+}
+
+
+/* ============================================================
+   PRODUCTS (CUSTOMER VIEW)
+   ============================================================ */
+
+function renderProducts(){
+
+    const container =
+        document.getElementById("products");
+
+
+    let list = products;
+
+
+    if(currentFilter !== "all"){
+
+        list =
+            products.filter(
+                product =>
+                    product.category === currentFilter
+            );
+
+    }
+
+
+    container.innerHTML =
+        list.map(product => `
+
+            <div
+                class="product"
+                onclick="openProduct(${product.id})"
+            >
+
+                <div class="product-image">
+                    ${
+                        product.image
+                        ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
+                        : product.emoji
+                    }
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        ${escapeHTML(product.name)}
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(product.description)}
+                    </p>
+
+                    <div class="price">
+                        Rs.
+                        ${Number(product.price).toLocaleString()}
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function filterProducts(category,button){
+
+    currentFilter = category;
+
+
+    document
+        .querySelectorAll(".filter")
+        .forEach(
+            x =>
+                x.classList.remove("active")
+        );
+
+
+    button.classList.add("active");
+
+    renderProducts();
+
+}
+
+
+/* ============================================================
+   PRODUCT DETAILS
+   ============================================================ */
+
+function openProduct(id){
+
+    selectedProduct =
+        products.find(
+            product => product.id === id
+        );
+
+
+    if(!selectedProduct) return;
+
+
+    document.getElementById(
+        "modalProductName"
+    ).textContent =
+        selectedProduct.name;
+
+
+    const optionsList =
+        (selectedProduct.options || []).length
+        ? `<div class="summary">
+              <strong>You'll be able to customize:</strong><br>
+              ${
+                  selectedProduct.options
+                  .map(o => escapeHTML(o.label))
+                  .join(", ")
+              }
+           </div>`
+        : "";
+
+
+    document.getElementById(
+        "productDetails"
+    ).innerHTML = `
+
+        <div
+            class="product-image"
+            style="
+                height:260px;
+                border-radius:20px;
+                margin-bottom:20px;
+            "
+        >
+            ${
+                selectedProduct.image
+                ? `<img src="${selectedProduct.image}" alt="${escapeHTML(selectedProduct.name)}">`
+                : selectedProduct.emoji
+            }
+        </div>
+
+        <h3>
+            ${escapeHTML(selectedProduct.name)}
+        </h3>
+
+        <p
+            style="
+                color:#806f68;
+                margin-top:10px;
+                line-height:1.7;
+            "
+        >
+            ${escapeHTML(selectedProduct.description)}
+        </p>
+
+        <div class="price">
+            Rs.
+            ${Number(selectedProduct.price).toLocaleString()}
+        </div>
+
+        <br>
+
+        <div class="summary">
+
+            ✓ Handmade product<br>
+            ✓ Made just for you<br>
+            ✓ Fully customizable
+
+        </div>
+
+        ${optionsList}
+
+    `;
+
+
+    openModal("productModal");
+
+}
+
+
+/* ============================================================
+   ORDER
+   ============================================================ */
+
+function startOrder(){
+
+    closeModal("productModal");
+
+
+    document.getElementById(
+        "customerStep"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "customizationStep"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "successStep"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "progress1"
+    ).classList.add("active");
+
+
+    document.getElementById(
+        "progress2"
+    ).classList.remove("active");
+
+
+    document.getElementById(
+        "progress3"
+    ).classList.remove("active");
+
+
+    openModal("orderModal");
+
+}
+
+
+function continueToCustomization(){
+
+    clearOrderErrors();
+
+
+    const fullName =
+        document.getElementById("fullName")
+        .value.trim();
+
+
+    const address =
+        document.getElementById("address")
+        .value.trim();
+
+
+    const area =
+        document.getElementById("area")
+        .value.trim();
+
+
+    const city =
+        document.getElementById("city")
+        .value.trim();
+
+
+    const phone =
+        document.getElementById("phone")
+        .value.trim();
+
+
+    const gmail =
+        document.getElementById("gmail")
+        .value.trim();
+
+
+    let valid = true;
+
+
+    if(fullName.length < 3){
+
+        showError(
+            "fullNameError",
+            "Please enter your full name."
+        );
+
+        valid = false;
+
+    }
+
+
+    if(address.length < 5){
+
+        showError(
+            "addressError",
+            "Please enter your complete address."
+        );
+
+        valid = false;
+
+    }
+
+
+    if(area.length < 2){
+
+        showError(
+            "areaError",
+            "Please enter your area."
+        );
+
+        valid = false;
+
+    }
+
+
+    if(city.length < 2){
+
+        showError(
+            "cityError",
+            "Please enter your city."
+        );
+
+        valid = false;
+
+    }
+
+
+    const phoneClean =
+        phone.replace(/[\s-]/g,"");
+
+
+    if(
+        !/^(\+92|0)3[0-9]{9}$/.test(phoneClean)
+    ){
+
+        showError(
+            "phoneError",
+            "Enter a valid Pakistani mobile number."
+        );
+
+        valid = false;
+
+    }
+
+
+    if(
+        !/^[^\s@]+@gmail\.com$/i.test(gmail)
+    ){
+
+        showError(
+            "gmailError",
+            "Please enter a valid Gmail address."
+        );
+
+        valid = false;
+
+    }
+
+
+    if(!valid) return;
+
+
+    document.getElementById(
+        "customerStep"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "customizationStep"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "progress1"
+    ).classList.remove("active");
+
+
+    document.getElementById(
+        "progress2"
+    ).classList.add("active");
+
+
+    document.getElementById(
+        "selectedProductText"
+    ).textContent =
+        selectedProduct.name;
+
+
+    document.getElementById(
+        "selectedPrice"
+    ).textContent =
+        "Rs. " +
+        Number(
+            selectedProduct.price
+        ).toLocaleString();
+
+
+    renderCustomizationFields(selectedProduct);
+
+}
+
+
+/* ============================================================
+   DYNAMIC CUSTOMIZATION FIELDS (PER-PRODUCT OPTIONS)
+   ============================================================ */
+
+function renderCustomizationFields(product){
+
+    const container =
+        document.getElementById(
+            "dynamicOptionsContainer"
+        );
+
+    const opts = product.options || [];
+
+
+    if(opts.length === 0){
+
+        container.innerHTML =
+            `<p style="color:var(--muted);margin-bottom:15px;">
+                This product has no additional customization options.
+             </p>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        opts.map(opt => {
+
+            const req = opt.required ? " *" : "";
+
+            if(opt.type === "select"){
+
+                return `
+                    <div class="form-group">
+                        <label>${escapeHTML(opt.label)}${req}</label>
+                        <select id="field_${opt.id}">
+                            <option value="">Select ${escapeHTML(opt.label)}</option>
+                            ${
+                                (opt.choices || [])
+                                .map(c => `<option>${escapeHTML(c)}</option>`)
+                                .join("")
+                            }
+                        </select>
+                    </div>
+                `;
+
+            }
+
+            if(opt.type === "textarea"){
+
+                return `
+                    <div class="form-group">
+                        <label>${escapeHTML(opt.label)}${req}</label>
+                        <textarea
+                            id="field_${opt.id}"
+                            rows="3"
+                            placeholder="${escapeHTML(opt.placeholder || "")}"
+                        ></textarea>
+                    </div>
+                `;
+
+            }
+
+            if(opt.type === "number"){
+
+                return `
+                    <div class="form-group">
+                        <label>${escapeHTML(opt.label)}${req}</label>
+                        <input
+                            type="number"
+                            id="field_${opt.id}"
+                            placeholder="${escapeHTML(opt.placeholder || "")}"
+                        >
+                    </div>
+                `;
+
+            }
+
+            return `
+                <div class="form-group">
+                    <label>${escapeHTML(opt.label)}${req}</label>
+                    <input
+                        type="text"
+                        id="field_${opt.id}"
+                        placeholder="${escapeHTML(opt.placeholder || "")}"
+                    >
+                </div>
+            `;
+
+        }).join("");
+
+}
+
+
+function placeOrder(){
+
+    const error =
+        document.getElementById("customError");
+
+    error.textContent = "";
+
+
+    const opts = selectedProduct.options || [];
+
+    const values = {};
+
+    let valid = true;
+
+    let firstErrorMsg = "";
+
+
+    opts.forEach(function(opt){
+
+        const field =
+            document.getElementById("field_" + opt.id);
+
+        const raw =
+            field ? field.value.trim() : "";
+
+
+        if(opt.required && !raw){
+
+            valid = false;
+
+            if(!firstErrorMsg){
+
+                firstErrorMsg =
+                    'Please fill in "' + opt.label + '".';
+
+            }
+
+        }
+
+
+        values[opt.label] =
+            raw || "Not specified";
+
+    });
+
+
+    if(!valid){
+
+        error.textContent = firstErrorMsg;
+
+        return;
+
+    }
+
+
+    const orderNumber =
+        generateOrderNumber();
+
+
+    const currentUser =
+        localStorage.getItem(
+            "MINAB_CURRENT_USER"
+        ) || "Guest";
+
+
+    const order = {
+
+        orderNumber:orderNumber,
+
+        createdAt:
+            new Date().toISOString(),
+
+        displayDate:
+            new Date().toLocaleString(),
+
+        username:currentUser,
+
+        product:{
+
+            id:selectedProduct.id,
+
+            name:selectedProduct.name,
+
+            price:selectedProduct.price
+
+        },
+
+        customer:{
+
+            fullName:
+                document.getElementById(
+                    "fullName"
+                ).value.trim(),
+
+            address:
+                document.getElementById(
+                    "address"
+                ).value.trim(),
+
+            area:
+                document.getElementById(
+                    "area"
+                ).value.trim(),
+
+            city:
+                document.getElementById(
+                    "city"
+                ).value.trim(),
+
+            phone:
+                document.getElementById(
+                    "phone"
+                ).value.trim(),
+
+            gmail:
+                document.getElementById(
+                    "gmail"
+                ).value.trim()
+
+        },
+
+        customization:values,
+
+        status:"New"
+
+    };
+
+
+    /* SAVE ORDER */
+
+    orders.push(order);
+
+    saveDatabase();
+
+    currentOrder = order;
+
+
+    /* SHOW SUCCESS */
+
+    document.getElementById(
+        "customerStep"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "customizationStep"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "successStep"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "progress2"
+    ).classList.remove("active");
+
+
+    document.getElementById(
+        "progress3"
+    ).classList.add("active");
+
+
+    document.getElementById(
+        "generatedOrderNumber"
+    ).textContent =
+        orderNumber;
+
+
+    /*
+       OPEN WHATSAPP AFTER ORDER
+    */
+
+    setTimeout(function(){
+
+        openWhatsApp();
+
+    },700);
+
+}
+
+
+/* ============================================================
+   ORDER NUMBER
+   ============================================================ */
+
+function generateOrderNumber(){
+
+    const date = new Date();
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth()+1
+        ).padStart(2,"0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2,"0");
+
+    const random =
+        Math.floor(
+            1000 +
+            Math.random()*9000
+        );
+
+
+    return (
+        "MINAB-" +
+        year +
+        month +
+        day +
+        "-" +
+        random
+    );
+
+}
+
+
+/* ============================================================
+   WHATSAPP MESSAGE SYSTEM
+   ============================================================ */
+
+function buildCustomizationText(customization){
+
+    return Object.keys(customization).map(function(key){
+
+        return key + ":\n" + customization[key];
+
+    }).join("\n\n");
+
+}
+
+
+function createWhatsAppMessage(){
+
+    const o = currentOrder;
+
+
+    return `
+MINAB CROCHET - NEW ORDER 🧶
+
+━━━━━━━━━━━━━━━━━━
+ORDER NUMBER
+${o.orderNumber}
+━━━━━━━━━━━━━━━━━━
+
+PRODUCT
+${o.product.name}
+
+PRICE
+Rs. ${Number(o.product.price).toLocaleString()}
+
+━━━━━━━━━━━━━━━━━━
+CUSTOMER INFORMATION
+━━━━━━━━━━━━━━━━━━
+
+Full Name:
+${o.customer.fullName}
+
+Address:
+${o.customer.address}
+
+Area:
+${o.customer.area}
+
+City:
+${o.customer.city}
+
+Phone:
+${o.customer.phone}
+
+Gmail:
+${o.customer.gmail}
+
+Username:
+${o.username}
+
+━━━━━━━━━━━━━━━━━━
+CUSTOMIZATION
+━━━━━━━━━━━━━━━━━━
+
+${buildCustomizationText(o.customization)}
+
+━━━━━━━━━━━━━━━━━━
+
+ORDER STATUS:
+New Order
+
+Please confirm this order.
+
+Thank you for ordering from
+MINAB CROCHET 🤍
+    `.trim();
+
+}
+
+
+function openWhatsApp(){
+
+    if(!currentOrder){
+
+        showToast(
+            "Order information not found."
+        );
+
+        return;
+
+    }
+
+
+    const message =
+        createWhatsAppMessage();
+
+
+    /*
+       03226322332
+       Converted to international format:
+       923226322332
+    */
+
+    const whatsappURL =
+        "https://wa.me/" +
+        WHATSAPP_NUMBER +
+        "?text=" +
+        encodeURIComponent(message);
+
+
+    document.getElementById(
+        "whatsappStatus"
+    ).textContent =
+        "Opening WhatsApp with your order details...";
+
+
+    /*
+       Mobile:
+       Opens WhatsApp app when available.
+
+       Desktop:
+       Opens WhatsApp Web.
+    */
+
+    window.location.href =
+        whatsappURL;
+
+}
+
+
+function openWhatsAppAgain(){
+
+    openWhatsApp();
+
+}
+
+
+/* ============================================================
+   ADMIN
+   ============================================================ */
+
+function showAdmin(){
+
+    document.getElementById(
+        "mainWebsite"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "adminPanel"
+    ).style.display = "block";
+
+
+    renderProducts();
+
+    renderAdmin();
+
+
+    setTimeout(function(){
+
+        document.getElementById(
+            "adminPanel"
+        ).scrollIntoView({
+            behavior:"smooth"
+        });
+
+    },100);
+
+}
+
+
+function logoutAdmin(){
+
+    localStorage.removeItem(
+        "MINAB_ADMIN"
+    );
+
+    location.reload();
+
+}
+
+
+/* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+
+function renderAdmin(){
+
+    renderAdminProducts();
+
+    renderAdminOrders();
+
+    renderAdminUsers();
+
+}
+
+
+/* ============================================================
+   ADMIN PRODUCTS (LIST)
+   ============================================================ */
+
+function renderAdminProducts(){
+
+    const container =
+        document.getElementById(
+            "adminProducts"
+        );
+
+
+    if(products.length === 0){
+
+        container.innerHTML = `
+            <div class="admin-card">
+                <p style="color:#806f68;">
+                    No products yet. Click "Add New Product" above.
+                </p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        products.map(product => `
+
+            <div class="admin-card">
+
+                <div class="admin-product-row">
+
+                    <div style="display:flex;gap:14px;align-items:center;">
+
+                        <div class="admin-thumb">
+                            ${
+                                product.image
+                                ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
+                                : (product.emoji || "🧶")
+                            }
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                ${escapeHTML(product.name)}
+                            </strong>
+
+                            <br>
+
+                            <small style="color:#806f68;">
+                                ${escapeHTML(product.category)} •
+                                Rs. ${Number(product.price).toLocaleString()}
+                            </small>
+
+                            <br>
+
+                            <small style="color:#806f68;">
+                                ${(product.options || []).length} custom option(s)
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div style="display:flex;gap:8px;">
+
+                        <button
+                            class="btn secondary"
+                            onclick="openProductEditor(${product.id})"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="btn secondary"
+                            style="color:var(--red);"
+                            onclick="deleteProduct(${product.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* ============================================================
+   ADMIN PRODUCT EDITOR (ADD / EDIT / OPTIONS)
+   ============================================================ */
+
+function openProductEditor(id){
+
+    if(id === null){
+
+        editingProduct = {
+
+            id:Date.now(),
+
+            name:"New Product",
+
+            category:"custom",
+
+            price:0,
+
+            emoji:"🧶",
+
+            image:null,
+
+            description:"",
+
+            options:[]
+
+        };
+
+    }else{
+
+        const found =
+            products.find(p => p.id === id);
+
+        if(!found) return;
+
+        editingProduct =
+            JSON.parse(JSON.stringify(found));
+
+        if(!editingProduct.options){
+
+            editingProduct.options = [];
+
+        }
+
+    }
+
+
+    document.getElementById(
+        "editModalTitle"
+    ).textContent =
+        id === null ? "Add New Product" : "Edit Product";
+
+
+    document.getElementById("editName").value =
+        editingProduct.name;
+
+    document.getElementById("editCategory").value =
+        editingProduct.category;
+
+    document.getElementById("editPrice").value =
+        editingProduct.price;
+
+    document.getElementById("editEmoji").value =
+        editingProduct.emoji;
+
+    document.getElementById("editDescription").value =
+        editingProduct.description;
+
+    document.getElementById("editImageInput").value =
+        "";
+
+    document.getElementById("editError").textContent =
+        "";
+
+
+    renderEditImagePreview();
+
+    renderOptionsEditor();
+
+
+    openModal("productEditModal");
+
+}
+
+
+function renderEditImagePreview(){
+
+    const preview =
+        document.getElementById("editImagePreview");
+
+    preview.innerHTML =
+        editingProduct.image
+        ? `<img src="${editingProduct.image}" alt="preview">`
+        : (editingProduct.emoji || "🧶");
+
+}
+
+
+function handleImageUpload(input){
+
+    const file = input.files[0];
+
+    if(!file) return;
+
+
+    if(file.size > 2 * 1024 * 1024){
+
+        showToast(
+            "Please choose an image smaller than 2MB."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+        editingProduct.image = e.target.result;
+
+        renderEditImagePreview();
+
+    };
+
+    reader.readAsDataURL(file);
+
+}
+
+
+function removeEditorImage(){
+
+    editingProduct.image = null;
+
+    document.getElementById("editImageInput").value = "";
+
+    renderEditImagePreview();
+
+}
+
+
+function renderOptionsEditor(){
+
+    const container =
+        document.getElementById("optionsEditorList");
+
+
+    if(!editingProduct.options.length){
+
+        container.innerHTML =
+            `<p style="color:var(--muted);margin-bottom:10px;">
+                No custom options yet. Add one below.
+             </p>`;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        editingProduct.options.map((opt,i) => `
+
+            <div class="admin-card" style="margin-bottom:10px;">
+
+                <div class="admin-grid">
+
+                    <div class="form-group">
+
+                        <label>Option Label</label>
+
+                        <input
+                            type="text"
+                            value="${escapeHTML(opt.label)}"
+                            onchange="updateOptionField(${i},'label',this.value)"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Field Type</label>
+
+                        <select onchange="updateOptionField(${i},'type',this.value)">
+
+                            <option value="text" ${opt.type==="text"?"selected":""}>
+                                Short Text
+                            </option>
+
+                            <option value="textarea" ${opt.type==="textarea"?"selected":""}>
+                                Long Text
+                            </option>
+
+                            <option value="number" ${opt.type==="number"?"selected":""}>
+                                Number
+                            </option>
+
+                            <option value="select" ${opt.type==="select"?"selected":""}>
+                                Dropdown
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                ${
+                    opt.type === "select"
+                    ? `
+                        <div class="form-group">
+                            <label>Dropdown Choices (comma separated)</label>
+                            <input
+                                type="text"
+                                value="${escapeHTML((opt.choices || []).join(", "))}"
+                                onchange="updateOptionChoices(${i},this.value)"
+                            >
+                        </div>
+                    `
+                    : `
+                        <div class="form-group">
+                            <label>Placeholder Text (optional)</label>
+                            <input
+                                type="text"
+                                value="${escapeHTML(opt.placeholder || "")}"
+                                onchange="updateOptionField(${i},'placeholder',this.value)"
+                            >
+                        </div>
+                    `
+                }
+
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+
+                    <label style="font-weight:normal;display:flex;gap:6px;align-items:center;">
+
+                        <input
+                            type="checkbox"
+                            ${opt.required ? "checked" : ""}
+                            onchange="updateOptionField(${i},'required',this.checked)"
+                        >
+
+                        Required
+
+                    </label>
+
+                    <button
+                        class="btn secondary"
+                        style="color:var(--red);"
+                        onclick="removeOptionRow(${i})"
+                    >
+                        Remove
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function updateOptionField(i,field,value){
+
+    editingProduct.options[i][field] = value;
+
+    if(field === "type"){
+
+        renderOptionsEditor();
+
+    }
+
+}
+
+
+function updateOptionChoices(i,value){
+
+    editingProduct.options[i].choices =
+        value.split(",")
+        .map(c => c.trim())
+        .filter(Boolean);
+
+}
+
+
+function addOptionRow(){
+
+    editingProduct.options.push({
+
+        id:"opt" + Date.now() + Math.floor(Math.random()*1000),
+
+        label:"New Option",
+
+        type:"text",
+
+        required:false,
+
+        placeholder:"",
+
+        choices:[]
+
+    });
+
+    renderOptionsEditor();
+
+}
+
+
+function removeOptionRow(i){
+
+    editingProduct.options.splice(i,1);
+
+    renderOptionsEditor();
+
+}
+
+
+function saveProductEditor(){
+
+    const name =
+        document.getElementById("editName").value.trim();
+
+    const category =
+        document.getElementById("editCategory").value;
+
+    const price =
+        Number(document.getElementById("editPrice").value);
+
+    const emoji =
+        document.getElementById("editEmoji").value.trim() || "🧶";
+
+    const description =
+        document.getElementById("editDescription").value.trim();
+
+
+    const error =
+        document.getElementById("editError");
+
+    error.textContent = "";
+
+
+    if(name.length < 2){
+
+        error.textContent =
+            "Please enter a product name.";
+
+        return;
+
+    }
+
+
+    if(!Number.isFinite(price) || price < 0){
+
+        error.textContent =
+            "Please enter a valid price.";
+
+        return;
+
+    }
+
+
+    editingProduct.name = name;
+
+    editingProduct.category = category;
+
+    editingProduct.price = price;
+
+    editingProduct.emoji = emoji;
+
+    editingProduct.description = description;
+
+
+    const idx =
+        products.findIndex(
+            p => p.id === editingProduct.id
+        );
+
+
+    if(idx > -1){
+
+        products[idx] = editingProduct;
+
+    }else{
+
+        products.push(editingProduct);
+
+    }
+
+
+    saveDatabase();
+
+    closeModal("productEditModal");
+
+    renderProducts();
+
+    renderAdminProducts();
+
+    showToast(
+        editingProduct.name +
+        " saved successfully."
+    );
+
+}
+
+
+function deleteFromEditor(){
+
+    const idx =
+        products.findIndex(
+            p => p.id === editingProduct.id
+        );
+
+    if(idx === -1){
+
+        closeModal("productEditModal");
+
+        return;
+
+    }
+
+    closeModal("productEditModal");
+
+    deleteProduct(editingProduct.id);
+
+}
+
+
+function deleteProduct(id){
+
+    const product =
+        products.find(p => p.id === id);
+
+    if(!product) return;
+
+
+    if(!confirm(
+        'Delete "' + product.name + '"? This cannot be undone.'
+    )) return;
+
+
+    products =
+        products.filter(p => p.id !== id);
+
+    saveDatabase();
+
+    renderProducts();
+
+    renderAdminProducts();
+
+    showToast("Product deleted.");
+
+}
+
+
+/* ============================================================
+   ADMIN ORDERS
+   ============================================================ */
+
+function renderAdminOrders(){
+
+    const container =
+        document.getElementById(
+            "adminOrders"
+        );
+
+
+    if(orders.length === 0){
+
+        container.innerHTML = `
+            <div class="admin-card">
+                <p style="color:#806f68;">
+                    No orders yet.
+                </p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        orders
+        .slice()
+        .reverse()
+        .map(order => `
+
+            <div class="admin-card">
+
+                <h3>
+                    ${escapeHTML(order.orderNumber)}
+                </h3>
+
+                <p style="color:#806f68;margin:5px 0 15px;">
+                    ${escapeHTML(order.displayDate)}
+                </p>
+
+                <div class="summary">
+
+                    <strong>Product</strong><br>
+
+                    ${escapeHTML(order.product.name)}
+
+                    <br><br>
+
+                    <strong>Price</strong><br>
+
+                    Rs.
+                    ${Number(
+                        order.product.price
+                    ).toLocaleString()}
+
+                </div>
+
+                <div class="summary">
+
+                    <strong>Customer</strong><br>
+
+                    Name:
+                    ${escapeHTML(
+                        order.customer.fullName
+                    )}
+                    <br>
+
+                    Address:
+                    ${escapeHTML(
+                        order.customer.address
+                    )}
+                    <br>
+
+                    Area:
+                    ${escapeHTML(
+                        order.customer.area
+                    )}
+                    <br>
+
+                    City:
+                    ${escapeHTML(
+                        order.customer.city
+                    )}
+                    <br>
+
+                    Phone:
+                    ${escapeHTML(
+                        order.customer.phone
+                    )}
+                    <br>
+
+                    Gmail:
+                    ${escapeHTML(
+                        order.customer.gmail
+                    )}
+                    <br>
+
+                    Username:
+                    ${escapeHTML(
+                        order.username
+                    )}
+
+                </div>
+
+                <div class="summary">
+
+                    <strong>Customization</strong><br>
+
+                    ${
+                        Object.keys(order.customization || {})
+                        .map(key =>
+                            escapeHTML(key) + ": " +
+                            escapeHTML(String(order.customization[key]))
+                        )
+                        .join("<br>")
+                        || "None"
+                    }
+
+                </div>
+
+                <strong>Status:</strong>
+
+                <span style="color:#b86f73;">
+                    ${escapeHTML(order.status)}
+                </span>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* ============================================================
+   ADMIN USERS
+   ============================================================ */
+
+function renderAdminUsers(){
+
+    const container =
+        document.getElementById(
+            "adminUsers"
+        );
+
+
+    if(users.length === 0){
+
+        container.innerHTML = `
+            <div class="admin-card">
+                No registered users yet.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        users.map(user => `
+
+            <div class="admin-card">
+
+                <strong>
+                    ${escapeHTML(user.username)}
+                </strong>
+
+                <br>
+
+                <small style="color:#806f68;">
+                    Account created:
+                    ${escapeHTML(user.createdAt)}
+                </small>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* ============================================================
    MODALS
-   ========================================================= */
+   ============================================================ */
 
 function openModal(id){
 
@@ -1550,77 +3474,138 @@ document
     .querySelectorAll(".modal")
     .forEach(modal => {
 
-        modal.addEventListener("click",function(e){
+        modal.addEventListener(
+            "click",
+            function(event){
 
-            if(e.target === modal){
+                if(event.target === modal){
 
-                modal.classList.remove("show");
+                    modal.classList.remove(
+                        "show"
+                    );
+
+                }
 
             }
-
-        });
+        );
 
     });
 
 
-/* =========================================================
+/* ============================================================
+   ERRORS
+   ============================================================ */
+
+function showError(id,message){
+
+    document.getElementById(
+        id
+    ).textContent = message;
+
+}
+
+
+function clearOrderErrors(){
+
+    [
+        "fullNameError",
+        "addressError",
+        "areaError",
+        "cityError",
+        "phoneError",
+        "gmailError"
+    ].forEach(id => {
+
+        document.getElementById(
+            id
+        ).textContent = "";
+
+    });
+
+}
+
+
+/* ============================================================
    TOAST
-   ========================================================= */
+   ============================================================ */
 
 let toastTimer;
+
 
 function showToast(message){
 
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
+
 
     toast.textContent = message;
 
     toast.classList.add("show");
 
+
     clearTimeout(toastTimer);
 
-    toastTimer = setTimeout(() => {
 
-        toast.classList.remove("show");
+    toastTimer =
+        setTimeout(function(){
 
-    },3500);
+            toast.classList.remove(
+                "show"
+            );
+
+        },3500);
 
 }
 
 
-/* =========================================================
-   SECURITY / DISPLAY ESCAPING
-   ========================================================= */
+/* ============================================================
+   SECURITY / HTML ESCAPE
+   ============================================================ */
 
 function escapeHTML(value){
 
     return String(value)
+
         .replaceAll("&","&amp;")
+
         .replaceAll("<","&lt;")
+
         .replaceAll(">","&gt;")
+
         .replaceAll('"',"&quot;")
+
         .replaceAll("'","&#039;");
 
 }
 
 
-/* =========================================================
-   STARTUP
-   ========================================================= */
+/* ============================================================
+   ENTER KEY LOGIN
+   ============================================================ */
 
-renderProducts();
+document.addEventListener(
+    "keydown",
+    function(event){
 
-if(
-    localStorage.getItem("minab_admin_logged") === "true"
-){
+        const screen =
+            document.getElementById(
+                "startScreen"
+            );
 
-    document.getElementById("adminPanel").style.display =
-        "block";
 
-    renderAdmin();
+        if(
+            event.key === "Enter" &&
+            screen.style.display !== "none"
+        ){
 
-}
+            startLogin();
+
+        }
+
+    }
+);
 
 </script>
 
