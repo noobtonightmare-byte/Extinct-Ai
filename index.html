@@ -678,7 +678,7 @@ footer p{
 </div>
 
 
-<!-- FIRST LOGIN -->
+<!-- LOGIN -->
 
 <div id="startScreen">
 
@@ -1240,7 +1240,7 @@ footer p{
 </div>
 
 
-<!-- PRODUCT EDIT MODAL (ADMIN) -->
+<!-- PRODUCT EDIT MODAL -->
 
 <div class="modal" id="productEditModal">
 
@@ -1265,7 +1265,11 @@ footer p{
 
             <div style="display:flex;gap:15px;align-items:center;">
 
-                <div id="editImagePreview" class="admin-thumb" style="width:80px;height:80px;font-size:36px;"></div>
+                <div
+                    id="editImagePreview"
+                    class="admin-thumb"
+                    style="width:80px;height:80px;font-size:36px;"
+                ></div>
 
                 <div>
 
@@ -1309,7 +1313,10 @@ footer p{
 
             <label>Product Name *</label>
 
-            <input type="text" id="editName">
+            <input
+                type="text"
+                id="editName"
+            >
 
         </div>
 
@@ -1334,7 +1341,11 @@ footer p{
 
                 <label>Price (Rs.) *</label>
 
-                <input type="number" id="editPrice" min="0">
+                <input
+                    type="number"
+                    id="editPrice"
+                    min="0"
+                >
 
             </div>
 
@@ -1344,7 +1355,10 @@ footer p{
 
             <label>Description</label>
 
-            <textarea id="editDescription" rows="3"></textarea>
+            <textarea
+                id="editDescription"
+                rows="3"
+            ></textarea>
 
         </div>
 
@@ -1355,9 +1369,9 @@ footer p{
         </h3>
 
         <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
-            These are the questions a customer answers when ordering this
-            product — colors, sizes, quantity, flowers wanted, design
-            requests, or anything else you need from them.
+            Add any questions customers should answer when ordering:
+            colors, sizes, quantity, flowers wanted, designs,
+            special requests and more.
         </p>
 
         <div id="optionsEditorList"></div>
@@ -1370,7 +1384,11 @@ footer p{
             + Add Option
         </button>
 
-        <div id="editError" class="error" style="margin-top:12px;"></div>
+        <div
+            id="editError"
+            class="error"
+            style="margin-top:12px;"
+        ></div>
 
         <button
             class="btn primary"
@@ -1406,8 +1424,13 @@ footer p{
 
 const WHATSAPP_NUMBER = "923226322332";
 
-const ADMIN_USERNAME = "MinabAdmin";
+/*
+   ADMIN LOGIN
+   Username: MinabAdmin
+   Password: okaybutidc7
+*/
 
+const ADMIN_USERNAME = "MinabAdmin";
 const ADMIN_PASSWORD = "okaybutidc7";
 
 
@@ -1427,14 +1450,48 @@ let products =
             price:1800,
             emoji:"💐",
             image:null,
-            description:
-                "Beautiful handmade crochet flowers.",
+            description:"Beautiful handmade crochet flowers.",
             options:[
-                {id:"o1",label:"Flower Types",type:"text",required:true,placeholder:"e.g. Roses, Sunflowers, Tulips"},
-                {id:"o2",label:"Flower Colors",type:"text",required:true,placeholder:"e.g. Pink, White, Red"},
-                {id:"o3",label:"Quantity",type:"number",required:true,placeholder:"Number of flowers"},
-                {id:"o4",label:"Wrapping Style",type:"select",required:false,choices:["Paper Wrap","Basket","Vase","Box"]},
-                {id:"o5",label:"Special Request",type:"textarea",required:false,placeholder:"Any other details..."}
+                {
+                    id:"o1",
+                    label:"Flower Types",
+                    type:"text",
+                    required:true,
+                    placeholder:"e.g. Roses, Sunflowers, Tulips"
+                },
+                {
+                    id:"o2",
+                    label:"Flower Colors",
+                    type:"text",
+                    required:true,
+                    placeholder:"e.g. Pink, White, Red"
+                },
+                {
+                    id:"o3",
+                    label:"Quantity",
+                    type:"number",
+                    required:true,
+                    placeholder:"Number of flowers"
+                },
+                {
+                    id:"o4",
+                    label:"Wrapping Style",
+                    type:"select",
+                    required:false,
+                    choices:[
+                        "Paper Wrap",
+                        "Basket",
+                        "Vase",
+                        "Box"
+                    ]
+                },
+                {
+                    id:"o5",
+                    label:"Special Request",
+                    type:"textarea",
+                    required:false,
+                    placeholder:"Any other details..."
+                }
             ]
         },
 
@@ -1445,13 +1502,51 @@ let products =
             price:2200,
             emoji:"👜",
             image:null,
-            description:
-                "Cute handmade crochet mini bag.",
+            description:"Cute handmade crochet mini bag.",
             options:[
-                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
-                {id:"o2",label:"Size",type:"select",required:true,choices:["Small","Medium","Large","Custom Size"]},
-                {id:"o3",label:"Strap Style",type:"text",required:false,placeholder:"e.g. Short handle, long strap"},
-                {id:"o4",label:"Special Request",type:"textarea",required:false,placeholder:"Any other details..."}
+                {
+                    id:"o1",
+                    label:"Color",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Black",
+                        "White",
+                        "Cream",
+                        "Pink",
+                        "Brown",
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Custom Color"
+                    ]
+                },
+                {
+                    id:"o2",
+                    label:"Size",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Small",
+                        "Medium",
+                        "Large",
+                        "Custom Size"
+                    ]
+                },
+                {
+                    id:"o3",
+                    label:"Strap Style",
+                    type:"text",
+                    required:false,
+                    placeholder:"e.g. Short handle, long strap"
+                },
+                {
+                    id:"o4",
+                    label:"Special Request",
+                    type:"textarea",
+                    required:false,
+                    placeholder:"Any other details..."
+                }
             ]
         },
 
@@ -1462,12 +1557,39 @@ let products =
             price:500,
             emoji:"🔑",
             image:null,
-            description:
-                "Small handmade crochet keychain.",
+            description:"Small handmade crochet keychain.",
             options:[
-                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
-                {id:"o2",label:"Design",type:"text",required:false,placeholder:"e.g. Flower, Animal, Initial"},
-                {id:"o3",label:"Special Request",type:"textarea",required:false,placeholder:""}
+                {
+                    id:"o1",
+                    label:"Color",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Black",
+                        "White",
+                        "Cream",
+                        "Pink",
+                        "Brown",
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Custom Color"
+                    ]
+                },
+                {
+                    id:"o2",
+                    label:"Design",
+                    type:"text",
+                    required:false,
+                    placeholder:"e.g. Flower, Animal, Initial"
+                },
+                {
+                    id:"o3",
+                    label:"Special Request",
+                    type:"textarea",
+                    required:false,
+                    placeholder:""
+                }
             ]
         },
 
@@ -1478,12 +1600,44 @@ let products =
             price:2500,
             emoji:"🎁",
             image:null,
-            description:
-                "Customized handmade crochet gift.",
+            description:"Customized handmade crochet gift.",
             options:[
-                {id:"o1",label:"Describe Your Idea",type:"textarea",required:true,placeholder:"Tell us what you'd like made..."},
-                {id:"o2",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
-                {id:"o3",label:"Size",type:"select",required:false,choices:["Small","Medium","Large","Custom Size"]}
+                {
+                    id:"o1",
+                    label:"Describe Your Idea",
+                    type:"textarea",
+                    required:true,
+                    placeholder:"Tell us what you'd like made..."
+                },
+                {
+                    id:"o2",
+                    label:"Color",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Black",
+                        "White",
+                        "Cream",
+                        "Pink",
+                        "Brown",
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Custom Color"
+                    ]
+                },
+                {
+                    id:"o3",
+                    label:"Size",
+                    type:"select",
+                    required:false,
+                    choices:[
+                        "Small",
+                        "Medium",
+                        "Large",
+                        "Custom Size"
+                    ]
+                }
             ]
         },
 
@@ -1494,12 +1648,44 @@ let products =
             price:1800,
             emoji:"🧸",
             image:null,
-            description:
-                "Soft handmade crochet teddy.",
+            description:"Soft handmade crochet teddy.",
             options:[
-                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
-                {id:"o2",label:"Size",type:"select",required:true,choices:["Small","Medium","Large","Custom Size"]},
-                {id:"o3",label:"Name Embroidery",type:"text",required:false,placeholder:"Optional name on the teddy"}
+                {
+                    id:"o1",
+                    label:"Color",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Black",
+                        "White",
+                        "Cream",
+                        "Pink",
+                        "Brown",
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Custom Color"
+                    ]
+                },
+                {
+                    id:"o2",
+                    label:"Size",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Small",
+                        "Medium",
+                        "Large",
+                        "Custom Size"
+                    ]
+                },
+                {
+                    id:"o3",
+                    label:"Name Embroidery",
+                    type:"text",
+                    required:false,
+                    placeholder:"Optional name on the teddy"
+                }
             ]
         },
 
@@ -1510,12 +1696,44 @@ let products =
             price:700,
             emoji:"❤️",
             image:null,
-            description:
-                "Cute handmade crochet heart.",
+            description:"Cute handmade crochet heart.",
             options:[
-                {id:"o1",label:"Color",type:"select",required:true,choices:["Black","White","Cream","Pink","Brown","Red","Blue","Green","Custom Color"]},
-                {id:"o2",label:"Size",type:"select",required:false,choices:["Small","Medium","Large","Custom Size"]},
-                {id:"o3",label:"Special Request",type:"textarea",required:false,placeholder:""}
+                {
+                    id:"o1",
+                    label:"Color",
+                    type:"select",
+                    required:true,
+                    choices:[
+                        "Black",
+                        "White",
+                        "Cream",
+                        "Pink",
+                        "Brown",
+                        "Red",
+                        "Blue",
+                        "Green",
+                        "Custom Color"
+                    ]
+                },
+                {
+                    id:"o2",
+                    label:"Size",
+                    type:"select",
+                    required:false,
+                    choices:[
+                        "Small",
+                        "Medium",
+                        "Large",
+                        "Custom Size"
+                    ]
+                },
+                {
+                    id:"o3",
+                    label:"Special Request",
+                    type:"textarea",
+                    required:false,
+                    placeholder:""
+                }
             ]
         }
 
@@ -1535,11 +1753,8 @@ let orders =
 
 
 let selectedProduct = null;
-
 let currentOrder = null;
-
 let currentFilter = "all";
-
 let editingProduct = null;
 
 
@@ -1587,7 +1802,7 @@ window.addEventListener("load",function(){
 
 
 /* ============================================================
-   LOGIN
+   LOGIN SYSTEM
    ============================================================ */
 
 function checkExistingLogin(){
@@ -1684,7 +1899,9 @@ function startLogin(){
     }
 
 
-    /* ADMIN LOGIN */
+    /* ========================================================
+       ADMIN LOGIN
+       ======================================================== */
 
     if(
         username === ADMIN_USERNAME &&
@@ -1707,7 +1924,7 @@ function startLogin(){
         showAdmin();
 
         showToast(
-            "Welcome, MinabAdmin!"
+            "Welcome, MinabAdmin! Admin access granted."
         );
 
         return;
@@ -1715,7 +1932,9 @@ function startLogin(){
     }
 
 
-    /* NORMAL USER */
+    /* ========================================================
+       NORMAL USER LOGIN / ACCOUNT CREATION
+       ======================================================== */
 
     const existingUser =
         users.find(
@@ -1796,6 +2015,23 @@ function showCurrentUser(){
             "MINAB_CURRENT_USER"
         );
 
+    const admin =
+        localStorage.getItem(
+            "MINAB_ADMIN"
+        ) === "true";
+
+
+    if(admin){
+
+        showToast(
+            "Logged in as MinabAdmin — Administrator"
+        );
+
+        return;
+
+    }
+
+
     if(user){
 
         showToast(
@@ -1819,7 +2055,7 @@ function logoutUser(){
 
 
 /* ============================================================
-   PRODUCTS (CUSTOMER VIEW)
+   CUSTOMER PRODUCTS
    ============================================================ */
 
 function renderProducts(){
@@ -1851,11 +2087,13 @@ function renderProducts(){
             >
 
                 <div class="product-image">
+
                     ${
                         product.image
                         ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
                         : product.emoji
                     }
+
                 </div>
 
                 <div class="product-info">
@@ -1925,14 +2163,26 @@ function openProduct(id){
 
     const optionsList =
         (selectedProduct.options || []).length
-        ? `<div class="summary">
-              <strong>You'll be able to customize:</strong><br>
-              ${
-                  selectedProduct.options
-                  .map(o => escapeHTML(o.label))
-                  .join(", ")
-              }
-           </div>`
+        ? `
+            <div class="summary">
+
+                <strong>
+                    You'll be able to customize:
+                </strong>
+
+                <br>
+
+                ${
+                    selectedProduct.options
+                    .map(
+                        o =>
+                            escapeHTML(o.label)
+                    )
+                    .join(", ")
+                }
+
+            </div>
+          `
         : "";
 
 
@@ -1948,11 +2198,13 @@ function openProduct(id){
                 margin-bottom:20px;
             "
         >
+
             ${
                 selectedProduct.image
                 ? `<img src="${selectedProduct.image}" alt="${escapeHTML(selectedProduct.name)}">`
                 : selectedProduct.emoji
             }
+
         </div>
 
         <h3>
@@ -1999,6 +2251,17 @@ function openProduct(id){
    ============================================================ */
 
 function startOrder(){
+
+    if(!selectedProduct){
+
+        showToast(
+            "Please select a product first."
+        );
+
+        return;
+
+    }
+
 
     closeModal("productModal");
 
@@ -2047,26 +2310,21 @@ function continueToCustomization(){
         document.getElementById("fullName")
         .value.trim();
 
-
     const address =
         document.getElementById("address")
         .value.trim();
-
 
     const area =
         document.getElementById("area")
         .value.trim();
 
-
     const city =
         document.getElementById("city")
         .value.trim();
 
-
     const phone =
         document.getElementById("phone")
         .value.trim();
-
 
     const gmail =
         document.getElementById("gmail")
@@ -2194,13 +2452,15 @@ function continueToCustomization(){
         ).toLocaleString();
 
 
-    renderCustomizationFields(selectedProduct);
+    renderCustomizationFields(
+        selectedProduct
+    );
 
 }
 
 
 /* ============================================================
-   DYNAMIC CUSTOMIZATION FIELDS (PER-PRODUCT OPTIONS)
+   DYNAMIC CUSTOMIZATION
    ============================================================ */
 
 function renderCustomizationFields(product){
@@ -2210,15 +2470,19 @@ function renderCustomizationFields(product){
             "dynamicOptionsContainer"
         );
 
-    const opts = product.options || [];
+
+    const opts =
+        product.options || [];
 
 
     if(opts.length === 0){
 
         container.innerHTML =
-            `<p style="color:var(--muted);margin-bottom:15px;">
+            `
+            <p style="color:var(--muted);margin-bottom:15px;">
                 This product has no additional customization options.
-             </p>`;
+            </p>
+            `;
 
         return;
 
@@ -2228,64 +2492,100 @@ function renderCustomizationFields(product){
     container.innerHTML =
         opts.map(opt => {
 
-            const req = opt.required ? " *" : "";
+            const req =
+                opt.required
+                ? " *"
+                : "";
+
 
             if(opt.type === "select"){
 
                 return `
                     <div class="form-group">
-                        <label>${escapeHTML(opt.label)}${req}</label>
+
+                        <label>
+                            ${escapeHTML(opt.label)}${req}
+                        </label>
+
                         <select id="field_${opt.id}">
-                            <option value="">Select ${escapeHTML(opt.label)}</option>
+
+                            <option value="">
+                                Select ${escapeHTML(opt.label)}
+                            </option>
+
                             ${
                                 (opt.choices || [])
-                                .map(c => `<option>${escapeHTML(c)}</option>`)
+                                .map(
+                                    c =>
+                                    `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`
+                                )
                                 .join("")
                             }
+
                         </select>
+
                     </div>
                 `;
 
             }
+
 
             if(opt.type === "textarea"){
 
                 return `
                     <div class="form-group">
-                        <label>${escapeHTML(opt.label)}${req}</label>
+
+                        <label>
+                            ${escapeHTML(opt.label)}${req}
+                        </label>
+
                         <textarea
                             id="field_${opt.id}"
                             rows="3"
                             placeholder="${escapeHTML(opt.placeholder || "")}"
                         ></textarea>
+
                     </div>
                 `;
 
             }
+
 
             if(opt.type === "number"){
 
                 return `
                     <div class="form-group">
-                        <label>${escapeHTML(opt.label)}${req}</label>
+
+                        <label>
+                            ${escapeHTML(opt.label)}${req}
+                        </label>
+
                         <input
                             type="number"
                             id="field_${opt.id}"
                             placeholder="${escapeHTML(opt.placeholder || "")}"
+                            min="1"
                         >
+
                     </div>
                 `;
 
             }
 
+
             return `
                 <div class="form-group">
-                    <label>${escapeHTML(opt.label)}${req}</label>
+
+                    <label>
+                        ${escapeHTML(opt.label)}${req}
+                    </label>
+
                     <input
                         type="text"
                         id="field_${opt.id}"
                         placeholder="${escapeHTML(opt.placeholder || "")}"
                     >
+
                 </div>
             `;
 
@@ -2297,12 +2597,17 @@ function renderCustomizationFields(product){
 function placeOrder(){
 
     const error =
-        document.getElementById("customError");
+        document.getElementById(
+            "customError"
+        );
+
 
     error.textContent = "";
 
 
-    const opts = selectedProduct.options || [];
+    const opts =
+        selectedProduct.options || [];
+
 
     const values = {};
 
@@ -2314,20 +2619,31 @@ function placeOrder(){
     opts.forEach(function(opt){
 
         const field =
-            document.getElementById("field_" + opt.id);
+            document.getElementById(
+                "field_" + opt.id
+            );
+
 
         const raw =
-            field ? field.value.trim() : "";
+            field
+            ? field.value.trim()
+            : "";
 
 
-        if(opt.required && !raw){
+        if(
+            opt.required &&
+            !raw
+        ){
 
             valid = false;
+
 
             if(!firstErrorMsg){
 
                 firstErrorMsg =
-                    'Please fill in "' + opt.label + '".';
+                    'Please fill in "' +
+                    opt.label +
+                    '".';
 
             }
 
@@ -2342,7 +2658,8 @@ function placeOrder(){
 
     if(!valid){
 
-        error.textContent = firstErrorMsg;
+        error.textContent =
+            firstErrorMsg;
 
         return;
 
@@ -2422,16 +2739,12 @@ function placeOrder(){
     };
 
 
-    /* SAVE ORDER */
-
     orders.push(order);
 
     saveDatabase();
 
     currentOrder = order;
 
-
-    /* SHOW SUCCESS */
 
     document.getElementById(
         "customerStep"
@@ -2464,10 +2777,6 @@ function placeOrder(){
         orderNumber;
 
 
-    /*
-       OPEN WHATSAPP AFTER ORDER
-    */
-
     setTimeout(function(){
 
         openWhatsApp();
@@ -2483,20 +2792,25 @@ function placeOrder(){
 
 function generateOrderNumber(){
 
-    const date = new Date();
+    const date =
+        new Date();
+
 
     const year =
         date.getFullYear();
+
 
     const month =
         String(
             date.getMonth()+1
         ).padStart(2,"0");
 
+
     const day =
         String(
             date.getDate()
         ).padStart(2,"0");
+
 
     const random =
         Math.floor(
@@ -2518,14 +2832,20 @@ function generateOrderNumber(){
 
 
 /* ============================================================
-   WHATSAPP MESSAGE SYSTEM
+   WHATSAPP
    ============================================================ */
 
 function buildCustomizationText(customization){
 
-    return Object.keys(customization).map(function(key){
+    return Object.keys(
+        customization
+    ).map(function(key){
 
-        return key + ":\n" + customization[key];
+        return (
+            key +
+            ":\n" +
+            customization[key]
+        );
 
     }).join("\n\n");
 
@@ -2534,7 +2854,8 @@ function buildCustomizationText(customization){
 
 function createWhatsAppMessage(){
 
-    const o = currentOrder;
+    const o =
+        currentOrder;
 
 
     return `
@@ -2613,17 +2934,13 @@ function openWhatsApp(){
         createWhatsAppMessage();
 
 
-    /*
-       03226322332
-       Converted to international format:
-       923226322332
-    */
-
     const whatsappURL =
         "https://wa.me/" +
         WHATSAPP_NUMBER +
         "?text=" +
-        encodeURIComponent(message);
+        encodeURIComponent(
+            message
+        );
 
 
     document.getElementById(
@@ -2631,14 +2948,6 @@ function openWhatsApp(){
     ).textContent =
         "Opening WhatsApp with your order details...";
 
-
-    /*
-       Mobile:
-       Opens WhatsApp app when available.
-
-       Desktop:
-       Opens WhatsApp Web.
-    */
 
     window.location.href =
         whatsappURL;
@@ -2714,7 +3023,7 @@ function renderAdmin(){
 
 
 /* ============================================================
-   ADMIN PRODUCTS (LIST)
+   ADMIN PRODUCTS
    ============================================================ */
 
 function renderAdminProducts(){
@@ -2729,9 +3038,12 @@ function renderAdminProducts(){
 
         container.innerHTML = `
             <div class="admin-card">
+
                 <p style="color:#806f68;">
-                    No products yet. Click "Add New Product" above.
+                    No products yet.
+                    Click "Add New Product" above.
                 </p>
+
             </div>
         `;
 
@@ -2747,14 +3059,22 @@ function renderAdminProducts(){
 
                 <div class="admin-product-row">
 
-                    <div style="display:flex;gap:14px;align-items:center;">
+                    <div
+                        style="
+                            display:flex;
+                            gap:14px;
+                            align-items:center;
+                        "
+                    >
 
                         <div class="admin-thumb">
+
                             ${
                                 product.image
                                 ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
                                 : (product.emoji || "🧶")
                             }
+
                         </div>
 
                         <div>
@@ -2766,21 +3086,33 @@ function renderAdminProducts(){
                             <br>
 
                             <small style="color:#806f68;">
-                                ${escapeHTML(product.category)} •
-                                Rs. ${Number(product.price).toLocaleString()}
+
+                                ${escapeHTML(product.category)}
+                                •
+                                Rs.
+                                ${Number(product.price).toLocaleString()}
+
                             </small>
 
                             <br>
 
                             <small style="color:#806f68;">
-                                ${(product.options || []).length} custom option(s)
+
+                                ${(product.options || []).length}
+                                custom option(s)
+
                             </small>
 
                         </div>
 
                     </div>
 
-                    <div style="display:flex;gap:8px;">
+                    <div
+                        style="
+                            display:flex;
+                            gap:8px;
+                        "
+                    >
 
                         <button
                             class="btn secondary"
@@ -2809,7 +3141,7 @@ function renderAdminProducts(){
 
 
 /* ============================================================
-   ADMIN PRODUCT EDITOR (ADD / EDIT / OPTIONS)
+   PRODUCT EDITOR
    ============================================================ */
 
 function openProductEditor(id){
@@ -2818,37 +3150,55 @@ function openProductEditor(id){
 
         editingProduct = {
 
-            id:Date.now(),
+            id:
+                Date.now(),
 
-            name:"New Product",
+            name:
+                "New Product",
 
-            category:"custom",
+            category:
+                "custom",
 
-            price:0,
+            price:
+                0,
 
-            emoji:"🧶",
+            emoji:
+                "🧶",
 
-            image:null,
+            image:
+                null,
 
-            description:"",
+            description:
+                "",
 
-            options:[]
+            options:
+                []
 
         };
 
     }else{
 
         const found =
-            products.find(p => p.id === id);
+            products.find(
+                p => p.id === id
+            );
+
 
         if(!found) return;
 
+
         editingProduct =
-            JSON.parse(JSON.stringify(found));
+            JSON.parse(
+                JSON.stringify(found)
+            );
 
-        if(!editingProduct.options){
 
-            editingProduct.options = [];
+        if(
+            !editingProduct.options
+        ){
+
+            editingProduct.options =
+                [];
 
         }
 
@@ -2858,28 +3208,50 @@ function openProductEditor(id){
     document.getElementById(
         "editModalTitle"
     ).textContent =
-        id === null ? "Add New Product" : "Edit Product";
+        id === null
+        ? "Add New Product"
+        : "Edit Product";
 
 
-    document.getElementById("editName").value =
+    document.getElementById(
+        "editName"
+    ).value =
         editingProduct.name;
 
-    document.getElementById("editCategory").value =
+
+    document.getElementById(
+        "editCategory"
+    ).value =
         editingProduct.category;
 
-    document.getElementById("editPrice").value =
+
+    document.getElementById(
+        "editPrice"
+    ).value =
         editingProduct.price;
 
-    document.getElementById("editEmoji").value =
+
+    document.getElementById(
+        "editEmoji"
+    ).value =
         editingProduct.emoji;
 
-    document.getElementById("editDescription").value =
+
+    document.getElementById(
+        "editDescription"
+    ).value =
         editingProduct.description;
 
-    document.getElementById("editImageInput").value =
+
+    document.getElementById(
+        "editImageInput"
+    ).value =
         "";
 
-    document.getElementById("editError").textContent =
+
+    document.getElementById(
+        "editError"
+    ).textContent =
         "";
 
 
@@ -2888,7 +3260,9 @@ function openProductEditor(id){
     renderOptionsEditor();
 
 
-    openModal("productEditModal");
+    openModal(
+        "productEditModal"
+    );
 
 }
 
@@ -2896,74 +3270,113 @@ function openProductEditor(id){
 function renderEditImagePreview(){
 
     const preview =
-        document.getElementById("editImagePreview");
+        document.getElementById(
+            "editImagePreview"
+        );
+
 
     preview.innerHTML =
         editingProduct.image
         ? `<img src="${editingProduct.image}" alt="preview">`
-        : (editingProduct.emoji || "🧶");
+        : (
+            editingProduct.emoji ||
+            "🧶"
+        );
 
 }
 
 
 function handleImageUpload(input){
 
-    const file = input.files[0];
+    const file =
+        input.files[0];
+
 
     if(!file) return;
 
 
-    if(file.size > 2 * 1024 * 1024){
+    if(
+        file.size >
+        2 * 1024 * 1024
+    ){
 
         showToast(
             "Please choose an image smaller than 2MB."
         );
 
-        input.value = "";
+
+        input.value =
+            "";
+
 
         return;
 
     }
 
 
-    const reader = new FileReader();
+    const reader =
+        new FileReader();
 
-    reader.onload = function(e){
 
-        editingProduct.image = e.target.result;
+    reader.onload =
+        function(e){
 
-        renderEditImagePreview();
+            editingProduct.image =
+                e.target.result;
 
-    };
 
-    reader.readAsDataURL(file);
+            renderEditImagePreview();
+
+        };
+
+
+    reader.readAsDataURL(
+        file
+    );
 
 }
 
 
 function removeEditorImage(){
 
-    editingProduct.image = null;
+    editingProduct.image =
+        null;
 
-    document.getElementById("editImageInput").value = "";
+
+    document.getElementById(
+        "editImageInput"
+    ).value =
+        "";
+
 
     renderEditImagePreview();
 
 }
 
 
+/* ============================================================
+   OPTIONS EDITOR
+   ============================================================ */
+
 function renderOptionsEditor(){
 
     const container =
-        document.getElementById("optionsEditorList");
+        document.getElementById(
+            "optionsEditorList"
+        );
 
 
-    if(!editingProduct.options.length){
+    if(
+        !editingProduct.options.length
+    ){
 
         container.innerHTML =
-            `<p style="color:var(--muted);margin-bottom:10px;">
-                No custom options yet. Add one below.
-             </p>`;
+            `
+            <p style="color:var(--muted);margin-bottom:10px;">
+                No custom options yet.
+                Add one below.
+            </p>
+            `;
 
         return;
 
@@ -2971,15 +3384,21 @@ function renderOptionsEditor(){
 
 
     container.innerHTML =
-        editingProduct.options.map((opt,i) => `
+        editingProduct.options.map(
+            (opt,i) => `
 
-            <div class="admin-card" style="margin-bottom:10px;">
+            <div
+                class="admin-card"
+                style="margin-bottom:10px;"
+            >
 
                 <div class="admin-grid">
 
                     <div class="form-group">
 
-                        <label>Option Label</label>
+                        <label>
+                            Option Label
+                        </label>
 
                         <input
                             type="text"
@@ -2991,23 +3410,39 @@ function renderOptionsEditor(){
 
                     <div class="form-group">
 
-                        <label>Field Type</label>
+                        <label>
+                            Field Type
+                        </label>
 
-                        <select onchange="updateOptionField(${i},'type',this.value)">
+                        <select
+                            onchange="updateOptionField(${i},'type',this.value)"
+                        >
 
-                            <option value="text" ${opt.type==="text"?"selected":""}>
+                            <option
+                                value="text"
+                                ${opt.type==="text"?"selected":""}
+                            >
                                 Short Text
                             </option>
 
-                            <option value="textarea" ${opt.type==="textarea"?"selected":""}>
+                            <option
+                                value="textarea"
+                                ${opt.type==="textarea"?"selected":""}
+                            >
                                 Long Text
                             </option>
 
-                            <option value="number" ${opt.type==="number"?"selected":""}>
+                            <option
+                                value="number"
+                                ${opt.type==="number"?"selected":""}
+                            >
                                 Number
                             </option>
 
-                            <option value="select" ${opt.type==="select"?"selected":""}>
+                            <option
+                                value="select"
+                                ${opt.type==="select"?"selected":""}
+                            >
                                 Dropdown
                             </option>
 
@@ -3019,31 +3454,58 @@ function renderOptionsEditor(){
 
                 ${
                     opt.type === "select"
-                    ? `
-                        <div class="form-group">
-                            <label>Dropdown Choices (comma separated)</label>
-                            <input
-                                type="text"
-                                value="${escapeHTML((opt.choices || []).join(", "))}"
-                                onchange="updateOptionChoices(${i},this.value)"
-                            >
-                        </div>
+                    ?
                     `
-                    : `
-                        <div class="form-group">
-                            <label>Placeholder Text (optional)</label>
-                            <input
-                                type="text"
-                                value="${escapeHTML(opt.placeholder || "")}"
-                                onchange="updateOptionField(${i},'placeholder',this.value)"
-                            >
-                        </div>
+                    <div class="form-group">
+
+                        <label>
+                            Dropdown Choices
+                            (comma separated)
+                        </label>
+
+                        <input
+                            type="text"
+                            value="${escapeHTML((opt.choices || []).join(", "))}"
+                            onchange="updateOptionChoices(${i},this.value)"
+                        >
+
+                    </div>
+                    `
+                    :
+                    `
+                    <div class="form-group">
+
+                        <label>
+                            Placeholder Text
+                            (optional)
+                        </label>
+
+                        <input
+                            type="text"
+                            value="${escapeHTML(opt.placeholder || "")}"
+                            onchange="updateOptionField(${i},'placeholder',this.value)"
+                        >
+
+                    </div>
                     `
                 }
 
-                <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div
+                    style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                    "
+                >
 
-                    <label style="font-weight:normal;display:flex;gap:6px;align-items:center;">
+                    <label
+                        style="
+                            font-weight:normal;
+                            display:flex;
+                            gap:6px;
+                            align-items:center;
+                        "
+                    >
 
                         <input
                             type="checkbox"
@@ -3067,16 +3529,32 @@ function renderOptionsEditor(){
 
             </div>
 
-        `).join("");
+        `
+        ).join("");
 
 }
 
 
-function updateOptionField(i,field,value){
+function updateOptionField(
+    i,
+    field,
+    value
+){
 
-    editingProduct.options[i][field] = value;
+    editingProduct.options[i][field] =
+        value;
+
 
     if(field === "type"){
+
+        if(value === "select"){
+
+            editingProduct.options[i].choices =
+                editingProduct.options[i].choices ||
+                [];
+
+        }
+
 
         renderOptionsEditor();
 
@@ -3085,11 +3563,17 @@ function updateOptionField(i,field,value){
 }
 
 
-function updateOptionChoices(i,value){
+function updateOptionChoices(
+    i,
+    value
+){
 
     editingProduct.options[i].choices =
-        value.split(",")
-        .map(c => c.trim())
+        value
+        .split(",")
+        .map(
+            c => c.trim()
+        )
         .filter(Boolean);
 
 }
@@ -3099,19 +3583,30 @@ function addOptionRow(){
 
     editingProduct.options.push({
 
-        id:"opt" + Date.now() + Math.floor(Math.random()*1000),
+        id:
+            "opt" +
+            Date.now() +
+            Math.floor(
+                Math.random()*1000
+            ),
 
-        label:"New Option",
+        label:
+            "New Option",
 
-        type:"text",
+        type:
+            "text",
 
-        required:false,
+        required:
+            false,
 
-        placeholder:"",
+        placeholder:
+            "",
 
-        choices:[]
+        choices:
+            []
 
     });
+
 
     renderOptionsEditor();
 
@@ -3120,35 +3615,64 @@ function addOptionRow(){
 
 function removeOptionRow(i){
 
-    editingProduct.options.splice(i,1);
+    editingProduct.options.splice(
+        i,
+        1
+    );
+
 
     renderOptionsEditor();
 
 }
 
 
+/* ============================================================
+   SAVE PRODUCT
+   ============================================================ */
+
 function saveProductEditor(){
 
     const name =
-        document.getElementById("editName").value.trim();
+        document.getElementById(
+            "editName"
+        ).value.trim();
+
 
     const category =
-        document.getElementById("editCategory").value;
+        document.getElementById(
+            "editCategory"
+        ).value;
+
 
     const price =
-        Number(document.getElementById("editPrice").value);
+        Number(
+            document.getElementById(
+                "editPrice"
+            ).value
+        );
+
 
     const emoji =
-        document.getElementById("editEmoji").value.trim() || "🧶";
+        document.getElementById(
+            "editEmoji"
+        ).value.trim() ||
+        "🧶";
+
 
     const description =
-        document.getElementById("editDescription").value.trim();
+        document.getElementById(
+            "editDescription"
+        ).value.trim();
 
 
     const error =
-        document.getElementById("editError");
+        document.getElementById(
+            "editError"
+        );
 
-    error.textContent = "";
+
+    error.textContent =
+        "";
 
 
     if(name.length < 2){
@@ -3161,7 +3685,10 @@ function saveProductEditor(){
     }
 
 
-    if(!Number.isFinite(price) || price < 0){
+    if(
+        !Number.isFinite(price) ||
+        price < 0
+    ){
 
         error.textContent =
             "Please enter a valid price.";
@@ -3171,41 +3698,60 @@ function saveProductEditor(){
     }
 
 
-    editingProduct.name = name;
+    editingProduct.name =
+        name;
 
-    editingProduct.category = category;
 
-    editingProduct.price = price;
+    editingProduct.category =
+        category;
 
-    editingProduct.emoji = emoji;
 
-    editingProduct.description = description;
+    editingProduct.price =
+        price;
+
+
+    editingProduct.emoji =
+        emoji;
+
+
+    editingProduct.description =
+        description;
 
 
     const idx =
         products.findIndex(
-            p => p.id === editingProduct.id
+            p =>
+                p.id ===
+                editingProduct.id
         );
 
 
     if(idx > -1){
 
-        products[idx] = editingProduct;
+        products[idx] =
+            editingProduct;
 
     }else{
 
-        products.push(editingProduct);
+        products.push(
+            editingProduct
+        );
 
     }
 
 
     saveDatabase();
 
-    closeModal("productEditModal");
+
+    closeModal(
+        "productEditModal"
+    );
+
 
     renderProducts();
 
     renderAdminProducts();
+
 
     showToast(
         editingProduct.name +
@@ -3219,20 +3765,31 @@ function deleteFromEditor(){
 
     const idx =
         products.findIndex(
-            p => p.id === editingProduct.id
+            p =>
+                p.id ===
+                editingProduct.id
         );
+
 
     if(idx === -1){
 
-        closeModal("productEditModal");
+        closeModal(
+            "productEditModal"
+        );
 
         return;
 
     }
 
-    closeModal("productEditModal");
 
-    deleteProduct(editingProduct.id);
+    closeModal(
+        "productEditModal"
+    );
+
+
+    deleteProduct(
+        editingProduct.id
+    );
 
 }
 
@@ -3240,26 +3797,44 @@ function deleteFromEditor(){
 function deleteProduct(id){
 
     const product =
-        products.find(p => p.id === id);
+        products.find(
+            p => p.id === id
+        );
+
 
     if(!product) return;
 
 
-    if(!confirm(
-        'Delete "' + product.name + '"? This cannot be undone.'
-    )) return;
+    if(
+        !confirm(
+            'Delete "' +
+            product.name +
+            '"? This cannot be undone.'
+        )
+    ){
+
+        return;
+
+    }
 
 
     products =
-        products.filter(p => p.id !== id);
+        products.filter(
+            p => p.id !== id
+        );
+
 
     saveDatabase();
+
 
     renderProducts();
 
     renderAdminProducts();
 
-    showToast("Product deleted.");
+
+    showToast(
+        "Product deleted."
+    );
 
 }
 
@@ -3280,9 +3855,11 @@ function renderAdminOrders(){
 
         container.innerHTML = `
             <div class="admin-card">
+
                 <p style="color:#806f68;">
                     No orders yet.
                 </p>
+
             </div>
         `;
 
@@ -3295,7 +3872,8 @@ function renderAdminOrders(){
         orders
         .slice()
         .reverse()
-        .map(order => `
+        .map(
+            order => `
 
             <div class="admin-card">
 
@@ -3303,19 +3881,32 @@ function renderAdminOrders(){
                     ${escapeHTML(order.orderNumber)}
                 </h3>
 
-                <p style="color:#806f68;margin:5px 0 15px;">
+                <p
+                    style="
+                        color:#806f68;
+                        margin:5px 0 15px;
+                    "
+                >
                     ${escapeHTML(order.displayDate)}
                 </p>
 
                 <div class="summary">
 
-                    <strong>Product</strong><br>
+                    <strong>
+                        Product
+                    </strong>
+
+                    <br>
 
                     ${escapeHTML(order.product.name)}
 
                     <br><br>
 
-                    <strong>Price</strong><br>
+                    <strong>
+                        Price
+                    </strong>
+
+                    <br>
 
                     Rs.
                     ${Number(
@@ -3326,42 +3917,52 @@ function renderAdminOrders(){
 
                 <div class="summary">
 
-                    <strong>Customer</strong><br>
+                    <strong>
+                        Customer
+                    </strong>
+
+                    <br>
 
                     Name:
                     ${escapeHTML(
                         order.customer.fullName
                     )}
+
                     <br>
 
                     Address:
                     ${escapeHTML(
                         order.customer.address
                     )}
+
                     <br>
 
                     Area:
                     ${escapeHTML(
                         order.customer.area
                     )}
+
                     <br>
 
                     City:
                     ${escapeHTML(
                         order.customer.city
                     )}
+
                     <br>
 
                     Phone:
                     ${escapeHTML(
                         order.customer.phone
                     )}
+
                     <br>
 
                     Gmail:
                     ${escapeHTML(
                         order.customer.gmail
                     )}
+
                     <br>
 
                     Username:
@@ -3373,29 +3974,47 @@ function renderAdminOrders(){
 
                 <div class="summary">
 
-                    <strong>Customization</strong><br>
+                    <strong>
+                        Customization
+                    </strong>
+
+                    <br>
 
                     ${
-                        Object.keys(order.customization || {})
-                        .map(key =>
-                            escapeHTML(key) + ": " +
-                            escapeHTML(String(order.customization[key]))
+                        Object.keys(
+                            order.customization || {}
+                        )
+                        .map(
+                            key =>
+                                escapeHTML(key) +
+                                ": " +
+                                escapeHTML(
+                                    String(
+                                        order.customization[key]
+                                    )
+                                )
                         )
                         .join("<br>")
-                        || "None"
+                        ||
+                        "None"
                     }
 
                 </div>
 
-                <strong>Status:</strong>
+                <strong>
+                    Status:
+                </strong>
 
-                <span style="color:#b86f73;">
+                <span
+                    style="color:#b86f73;"
+                >
                     ${escapeHTML(order.status)}
                 </span>
 
             </div>
 
-        `).join("");
+        `
+        ).join("");
 
 }
 
@@ -3416,7 +4035,9 @@ function renderAdminUsers(){
 
         container.innerHTML = `
             <div class="admin-card">
+
                 No registered users yet.
+
             </div>
         `;
 
@@ -3426,7 +4047,8 @@ function renderAdminUsers(){
 
 
     container.innerHTML =
-        users.map(user => `
+        users.map(
+            user => `
 
             <div class="admin-card">
 
@@ -3436,14 +4058,19 @@ function renderAdminUsers(){
 
                 <br>
 
-                <small style="color:#806f68;">
+                <small
+                    style="color:#806f68;"
+                >
                     Account created:
-                    ${escapeHTML(user.createdAt)}
+                    ${escapeHTML(
+                        user.createdAt
+                    )}
                 </small>
 
             </div>
 
-        `).join("");
+        `
+        ).join("");
 
 }
 
@@ -3472,35 +4099,44 @@ function closeModal(id){
 
 document
     .querySelectorAll(".modal")
-    .forEach(modal => {
+    .forEach(
+        modal => {
 
-        modal.addEventListener(
-            "click",
-            function(event){
+            modal.addEventListener(
+                "click",
+                function(event){
 
-                if(event.target === modal){
+                    if(
+                        event.target ===
+                        modal
+                    ){
 
-                    modal.classList.remove(
-                        "show"
-                    );
+                        modal.classList.remove(
+                            "show"
+                        );
+
+                    }
 
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 
 /* ============================================================
    ERRORS
    ============================================================ */
 
-function showError(id,message){
+function showError(
+    id,
+    message
+){
 
     document.getElementById(
         id
-    ).textContent = message;
+    ).textContent =
+        message;
 
 }
 
@@ -3514,13 +4150,16 @@ function clearOrderErrors(){
         "cityError",
         "phoneError",
         "gmailError"
-    ].forEach(id => {
+    ].forEach(
+        id => {
 
-        document.getElementById(
-            id
-        ).textContent = "";
+            document.getElementById(
+                id
+            ).textContent =
+                "";
 
-    });
+        }
+    );
 
 }
 
@@ -3540,43 +4179,67 @@ function showToast(message){
         );
 
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
-    toast.classList.add("show");
+
+    toast.classList.add(
+        "show"
+    );
 
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
 
     toastTimer =
-        setTimeout(function(){
+        setTimeout(
+            function(){
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        },3500);
+            },
+            3500
+        );
 
 }
 
 
 /* ============================================================
-   SECURITY / HTML ESCAPE
+   HTML ESCAPE
    ============================================================ */
 
 function escapeHTML(value){
 
     return String(value)
 
-        .replaceAll("&","&amp;")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-        .replaceAll("<","&lt;")
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-        .replaceAll(">","&gt;")
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-        .replaceAll('"',"&quot;")
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-        .replaceAll("'","&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
